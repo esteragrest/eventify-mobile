@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SearchInput } from "./ui";
 
 interface HeaderProps {
@@ -9,22 +9,16 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onMenuPress }) => {
   return (
     <View style={styles.container}>
-        <Image
-          source={require("../public/img/logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+      <Image
+        source={require("../public/img/logo.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      <SearchInput />
       <View style={styles.rightButtons}>
-        {/* <TouchableOpacity style={styles.iconButton}>
-          <Image
-            source={require("../public/img/search.svg")}
-            style={styles.icon}
-          />
-        </TouchableOpacity> */}
-        <SearchInput />
         <TouchableOpacity style={styles.iconButton} onPress={onMenuPress}>
           <Image
-            source={require("../public/img/logo.png")}
+            source={require("../public/img/burger-menu-1.png")}
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -35,7 +29,8 @@ export const Header: React.FC<HeaderProps> = ({ onMenuPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
+    height: 95,
+    paddingTop: 20,
     paddingHorizontal: 16,
     backgroundColor: "#FCF7FF",
     flexDirection: "row",
@@ -63,7 +58,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 20,
+    height: 10,
   },
 });

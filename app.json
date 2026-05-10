@@ -8,6 +8,10 @@
     "scheme": "eventifymobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "androidNavigationBar": {
+      "visible": "leanback",
+      "barStyle": "dark-content"
+    },
     "ios": {
       "supportsTablet": true
     },

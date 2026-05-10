@@ -1,17 +1,67 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef } from "react";
+import {
+  Animated,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface SideMenuProps {
   onClose: () => void;
 }
 
 export const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
+  const slideAnim = useRef(new Animated.Value(300)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  const closeMenu = () => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 300,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start(() => onClose());
+  };
+
   return (
-    <View style={styles.overlay}>
-      <View style={styles.menu}>
-        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+    <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
+      <Pressable style={StyleSheet.absoluteFill} onPress={closeMenu} />
+      <Animated.View
+        style={[
+          styles.menu,
+          {
+            transform: [{ translateX: slideAnim }],
+          },
+        ]}
+      >
+        <TouchableOpacity style={styles.closeButton} onPress={closeMenu}>
           <Image
-            source={require("../../public/img/cross.png")}
-            style={{ width: 24, height: 24 }}
+            source={require("../../public/img/burger-menu-2.png")}
+            style={{ width: 20, height: 10 }}
           />
         </TouchableOpacity>
 
@@ -30,8 +80,8 @@ export const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
             <Text style={styles.buttonText}>Войти в аккаунт</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </View>
+      </Animated.View>
+    </Animated.View>
   );
 };
 
@@ -47,33 +97,34 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   menu: {
-    width: "70%",
+    width: "75%",
     height: "100%",
-    backgroundColor: "#E0C9FF",
+    backgroundColor: "#FCF7FF",
     paddingTop: 50,
+    paddingBottom: 50,
     paddingHorizontal: 20,
+    justifyContent: "space-between",
   },
   closeButton: {
     position: "absolute",
-    top: 20,
+    top: 55,
     right: 20,
   },
   nav: {
     marginTop: 20,
-    gap: 20,
+    gap: 9,
   },
   navItem: {
-    fontSize: 20,
-    fontWeight: "600",
+    fontSize: 14,
   },
   buttons: {
     marginTop: 40,
-    gap: 12,
+    gap: 8,
   },
   button: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 6,
+    width: "auto",
+    paddingVertical: 8,
+    paddingHorizontal: 6,
   },
   primary: {
     backgroundColor: "#C0A2E2",
@@ -83,7 +134,8 @@ const styles = StyleSheet.create({
     borderColor: "#C0A2E2",
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 12,
+    fontWeight: "bold",
     textAlign: "center",
   },
 });
