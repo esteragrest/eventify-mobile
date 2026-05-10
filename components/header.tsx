@@ -6,7 +6,7 @@ interface HeaderProps {
   onMenuPress: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onMenuPress }) => {
+export const Header = ({ onMenuPress }: HeaderProps) => {
   return (
     <View style={styles.container}>
       <Image

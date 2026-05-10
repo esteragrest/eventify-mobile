@@ -8,12 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Button } from "./button";
 
 interface SideMenuProps {
   onClose: () => void;
 }
 
-export const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
+export const SideMenu = ({ onClose }: SideMenuProps) => {
   const slideAnim = useRef(new Animated.Value(300)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -72,13 +73,13 @@ export const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
         </View>
 
         <View style={styles.buttons}>
-          <TouchableOpacity style={[styles.button, styles.primary]}>
-            <Text style={styles.buttonText}>Зарегистрироваться</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.button, styles.secondary]}>
-            <Text style={styles.buttonText}>Войти в аккаунт</Text>
-          </TouchableOpacity>
+          {/* TODO: добавить действие */}
+          <Button backgroundColor="#C0A2E2" width={170}>
+            Зарегистрироваться
+          </Button>
+          <Button border="2px solid #C0A2E2" width={150}>
+            Войти в аккаунт
+          </Button>
         </View>
       </Animated.View>
     </Animated.View>
@@ -120,22 +121,5 @@ const styles = StyleSheet.create({
   buttons: {
     marginTop: 40,
     gap: 8,
-  },
-  button: {
-    width: "auto",
-    paddingVertical: 8,
-    paddingHorizontal: 6,
-  },
-  primary: {
-    backgroundColor: "#C0A2E2",
-  },
-  secondary: {
-    borderWidth: 2,
-    borderColor: "#C0A2E2",
-  },
-  buttonText: {
-    fontSize: 12,
-    fontWeight: "bold",
-    textAlign: "center",
   },
 });
