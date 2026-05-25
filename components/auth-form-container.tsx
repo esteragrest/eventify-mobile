@@ -1,5 +1,4 @@
 import { Link } from "expo-router";
-import React from "react";
 import { StyleSheet, View } from "react-native";
 
 interface AuthFormContainerProps {

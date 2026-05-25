@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -8,11 +8,7 @@ interface DateTimeInputProps {
   onChange?: (value: Date) => void;
 }
 
-export const DateTimeInput: React.FC<DateTimeInputProps> = ({
-  type,
-  label,
-  onChange,
-}) => {
+export const DateTimeInput = ({ type, label, onChange }: DateTimeInputProps) => {
   const [value, setValue] = useState<Date>(new Date());
   const [open, setOpen] = useState(false);
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { ControlButton } from "./ui";
 
@@ -7,10 +6,7 @@ interface ControlButtonsProps {
   onDelete: () => void;
 }
 
-export const ControlButtons: React.FC<ControlButtonsProps> = ({
-  onEdit,
-  onDelete,
-}) => {
+export const ControlButtons = ({ onEdit, onDelete }: ControlButtonsProps) => {
   return (
     <View style={styles.container}>
       {/* //TODO: заменить на качественные картинки */}

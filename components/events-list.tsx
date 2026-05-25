@@ -1,5 +1,4 @@
-import React from "react";
-import { View, FlatList, StyleSheet, useWindowDimensions } from "react-native";
+import { FlatList, StyleSheet, useWindowDimensions, View } from "react-native";
 import { EventsCard, EventsNotFound } from "./ui";
 
 interface EventItem {
@@ -16,7 +15,7 @@ interface EventsListProps {
   events: EventItem[];
 }
 
-export const EventsList: React.FC<EventsListProps> = ({ events }) => {
+export const EventsList = ({ events }: EventsListProps) => {
   const { width } = useWindowDimensions();
 
   let numColumns = 1;

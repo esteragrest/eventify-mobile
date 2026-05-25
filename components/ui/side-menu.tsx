@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   Animated,
   Image,
@@ -66,6 +66,7 @@ export const SideMenu = ({ onClose }: SideMenuProps) => {
           />
         </TouchableOpacity>
 
+        {/* TODO: мь вынести в компонент */}
         <View style={styles.nav}>
           <Text style={styles.navItem}>Главная</Text>
           <Text style={styles.navItem}>Мероприятия</Text>

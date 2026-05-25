@@ -1,5 +1,4 @@
 import { Link } from "expo-router";
-import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { BackgroundBanner, Button } from "./ui";
 
@@ -9,11 +8,7 @@ interface ErrorPageProps {
   message: string;
 }
 
-export const ErrorPage: React.FC<ErrorPageProps> = ({
-  status,
-  title,
-  message,
-}) => {
+export const ErrorPage = ({ status, title, message }: ErrorPageProps) => {
   return (
     <View style={styles.container}>
       <BackgroundBanner imgUrl={require("../public/img/error-page-left.svg")} />

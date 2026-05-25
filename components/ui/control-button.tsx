@@ -1,15 +1,11 @@
-import React from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 interface ControlButtonProps {
   onPress?: () => void;
   children: React.ReactNode;
 }
 
-export const ControlButton: React.FC<ControlButtonProps> = ({
-  onPress,
-  children,
-}) => {
+export const ControlButton = ({ onPress, children }: ControlButtonProps) => {
   return (
     <TouchableOpacity
       style={styles.button}

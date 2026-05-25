@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import React, { useEffect, useRef } from "react";
+import{ useEffect, useRef } from "react";
 import { Animated, StyleSheet, Text } from "react-native";
 import { Button } from "./button";
 
