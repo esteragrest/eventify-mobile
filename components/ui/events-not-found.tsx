@@ -56,7 +56,7 @@ export const EventsNotFound = () => {
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
       <Animated.Image
-        source={require("../..public/events-not-found.png")}
+        source={require("../../assets/img/events-not-found.png")}
         style={[styles.image, { transform: [{ translateY: floatAnim }] }]}
       />
 

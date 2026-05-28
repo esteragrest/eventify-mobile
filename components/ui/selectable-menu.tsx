@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Animated,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -72,12 +71,12 @@ export const SelectableMenu = ({
       <TouchableOpacity style={styles.selectButton} onPress={toggleMenu}>
         <Text style={styles.selectedText}>{selectedOption}</Text>
 
-        <Animated.View style={{ transform: [{ rotate }] }}>
+        {/* <Animated.View style={{ transform: [{ rotate }] }}>
           <Image
             source={require("../../../assets/select.png")}
             style={styles.icon}
           />
-        </Animated.View>
+        </Animated.View> */}
       </TouchableOpacity>
 
       {/* Выпадающий список */}
