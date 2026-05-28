@@ -10,6 +10,7 @@ export * from "./events-card";
 export * from "./events-not-found";
 export * from "./file-input";
 export * from "./form";
+export * from "./form-row";
 export * from "./form-title";
 export * from "./input";
 export * from "./item-main-info";

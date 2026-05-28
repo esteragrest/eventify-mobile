@@ -10,9 +10,7 @@ export const FormRow = ({ children }: FormRowProps) => {
   //TODO: скорее всего убрать эти стили, пересмотреть при верстке форм
   const isMobile = width <= 767;
 
-  return (
-    <View style={[styles.row, isMobile && styles.rowMobile]}>{children}</View>
-  );
+  return <View style={styles.row}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -21,10 +19,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    gap: 15,
-  },
-  rowMobile: {
-    flexDirection: "column",
-    gap: 0,
+    gap: 10,
   },
 });

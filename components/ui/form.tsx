@@ -12,7 +12,7 @@ export const Form = ({ children }: FormProps) => {
 
 const styles = StyleSheet.create({
   form: {
-    width: "90%",
+    width: "100%",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
