@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { useEffect, useRef } from "react";
 import {
   Animated,
@@ -74,13 +75,17 @@ export const SideMenu = ({ onClose }: SideMenuProps) => {
         </View>
 
         <View style={styles.buttons}>
-          {/* TODO: добавить действие */}
-          <Button backgroundColor="#C0A2E2" width={170}>
-            Зарегистрироваться
-          </Button>
-          <Button border="2px solid #C0A2E2" width={150}>
-            Войти в аккаунт
-          </Button>
+          <Link href="/auth/register" asChild>
+            <Button backgroundColor="#C0A2E2" width={170}>
+              Зарегистрироваться
+            </Button>
+          </Link>
+
+          <Link href="/auth/login" asChild>
+            <Button border="2px solid #C0A2E2" width={150}>
+              Войти в аккаунт
+            </Button>
+          </Link>
         </View>
       </Animated.View>
     </Animated.View>

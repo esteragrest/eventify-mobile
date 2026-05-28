@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 interface ErrorMessageProps {
   children: string;
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#ffe2e2",
     padding: 12,
-    marginTop: 5,
+    marginBottom: 12,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,
