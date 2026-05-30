@@ -21,3 +21,4 @@ export const eventRegistrationValidationSchema = yup.object().shape({
 		.min(1, 'Минимальное количество участников — 1')
 		.max(100, 'Максимальное количество участников — 100'),
 });
+
