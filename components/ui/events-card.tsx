@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#fff",
     padding: 12,
-    borderRadius: 8,
     gap: 5,
     shadowColor: "#000",
     shadowOpacity: 0.4,

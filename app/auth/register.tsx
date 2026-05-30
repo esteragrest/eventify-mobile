@@ -130,7 +130,6 @@ export default function RegistrationScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 64,
     alignItems: "center",
     gap: 20,
     marginTop: 64,

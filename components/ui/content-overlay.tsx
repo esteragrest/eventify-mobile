@@ -10,6 +10,6 @@ export const ContentOverlay = ({ children }: ContentOverlayProps) => {
 
 const styles = StyleSheet.create({
   overlay: {
-    opacity: 0.7,
+    opacity: 0.5,
   },
 });

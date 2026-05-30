@@ -20,6 +20,7 @@ export const EventsList = ({ events }: EventsListProps) => {
 
   let numColumns = 1;
 
+  //TODO: пересмотреть колонки
   if (width >= 1700) numColumns = 4;
   else if (width >= 1170) numColumns = 4;
   else if (width >= 1100) numColumns = 4;

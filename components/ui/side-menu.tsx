@@ -69,9 +69,17 @@ export const SideMenu = ({ onClose }: SideMenuProps) => {
 
         {/* TODO: мь вынести в компонент */}
         <View style={styles.nav}>
-          <Text style={styles.navItem}>Главная</Text>
-          <Text style={styles.navItem}>Мероприятия</Text>
-          <Text style={styles.navItem}>Профиль</Text>
+          <Link href="/" asChild>
+            <Text style={styles.navItem}>Главная</Text>
+          </Link>
+
+          <Link href="/events" asChild>
+            <Text style={styles.navItem}>Мероприятия</Text>
+          </Link>
+
+          <Link href="/profile" asChild>
+            <Text style={styles.navItem}>Профиль</Text>
+          </Link>
         </View>
 
         <View style={styles.buttons}>
@@ -111,6 +119,12 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingHorizontal: 20,
     justifyContent: "space-between",
+    position: "absolute",
+    right: 0,
+    top: 0,
+
+    zIndex: 999,
+    elevation: 20,
   },
   closeButton: {
     position: "absolute",

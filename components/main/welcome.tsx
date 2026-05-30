@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     width: "50%",
     paddingHorizontal: 60,
     gap: 10,
-    zIndex: 10,
+    zIndex: 1,
   },
 
   textBlockMobile: {
