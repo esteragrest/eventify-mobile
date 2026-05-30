@@ -23,7 +23,8 @@ export const EventsCard = ({
   return (
     <View style={styles.container}>
       <View style={styles.info}>
-        <Image source={photo} style={styles.image} />
+        {/* <Image source={photo} style={styles.image} /> */}
+        <Image source={{ uri: photo }} style={styles.image} />
 
         <Text style={styles.title}>{title}</Text>
 

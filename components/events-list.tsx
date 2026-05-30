@@ -1,15 +1,6 @@
+import { EventItem } from "@/store/types";
 import { FlatList, StyleSheet, useWindowDimensions, View } from "react-native";
 import { EventsCard, EventsNotFound } from "./ui";
-
-interface EventItem {
-  id: number;
-  title: string;
-  organizerFirstName: string;
-  organizerLastName?: string;
-  eventDate: string;
-  description: string;
-  photo: any;
-}
 
 interface EventsListProps {
   events: EventItem[];

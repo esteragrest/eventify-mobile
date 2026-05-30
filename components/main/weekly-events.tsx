@@ -1,31 +1,14 @@
-import { useEffect, useState } from "react";
-import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
-// import { useSelector, useDispatch } from "react-redux";
+import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
 import { EventsList } from "../events-list";
 import { Loader } from "../ui";
-// import { selectIsLoading } from "../../../selectors";
-// import { setIsLoading } from "../../../actions";
+import { useGetWeeklyEventsQuery } from "@/store/api/eventsApi";
 
 export const WeeklyEvents = () => {
-  const [weeklyEvents, setWeeklyEvents] = useState<any[]>([]);
-  //заменить на состояние/из хуков запросов
-  const isLoading = false;
-  //   const isLoading = useSelector(selectIsLoading);
-  //   const dispatch = useDispatch();
+  const { data: weeklyEvents, isLoading, isError } = useGetWeeklyEventsQuery();
 
   const { width } = useWindowDimensions();
   const isMobile = width <= 480;
   const isTablet = width <= 1024;
-
-  useEffect(() => {
-    // dispatch(setIsLoading(true));
-
-    //запросы
-    setTimeout(() => {
-      setWeeklyEvents([]);
-      //   dispatch(setIsLoading(false));
-    }, 500);
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -43,7 +26,11 @@ export const WeeklyEvents = () => {
         зарегистрироваться!
       </Text>
 
-      {isLoading ? <Loader /> : <EventsList events={weeklyEvents} />}
+      {isLoading && <Loader />}
+
+      {isError && <Text>Ошибка загрузки данных</Text>}
+
+      {!isLoading && !isError && <EventsList events={weeklyEvents ?? []} />}
     </View>
   );
 };
@@ -76,3 +63,4 @@ const styles = StyleSheet.create({
     width: "80%",
   },
 });
+

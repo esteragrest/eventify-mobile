@@ -1,29 +1,37 @@
-import { EventsList, Pagination } from "@/components";
-import { mockEvents } from "@/mock/events";
-import { useState } from "react";
+import { EventsList, Pagination, Loader } from "@/components";
+import { useGetEventsQuery } from "@/store/api";
 import { ScrollView, StyleSheet, View } from "react-native";
+import { useState } from "react";
 
 export default function EventsScreen() {
   const [page, setPage] = useState(1);
 
-  const pageSize = 6;
-  const lastPage = Math.ceil(mockEvents.length / pageSize);
+  const limit = 6;
 
-  const paginatedEvents = mockEvents.slice(
-    (page - 1) * pageSize,
-    page * pageSize,
-  );
+  const { data, isLoading, isError } = useGetEventsQuery({
+    page,
+    limit,
+    title: "",
+  });
+
+  const events = data?.events ?? [];
+  const lastPage = data?.lastPage ?? 1;
+  console.log("events", events);
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.container}
     >
-      <View style={styles.listWrapper}>
-        <EventsList events={paginatedEvents} />
-      </View>
+      {isLoading && <Loader />}
 
-      {lastPage > 1 && (
+      {!isLoading && !isError && (
+        <View style={styles.listWrapper}>
+          <EventsList events={events} />
+        </View>
+      )}
+
+      {!isLoading && lastPage > 1 && events.length > 0 && (
         <Pagination page={page} lastPage={lastPage} setPage={setPage} />
       )}
     </ScrollView>
@@ -42,3 +50,4 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
+

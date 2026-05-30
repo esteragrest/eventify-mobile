@@ -1,8 +1,10 @@
 import { Header } from "@/components";
 import { SideMenu } from "@/components/ui";
+import { store } from "@/store";
 import { Stack, useSegments } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
+import { Provider } from "react-redux";
 
 export default function RootLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,12 +13,14 @@ export default function RootLayout() {
   const isAuth = segments[0] === "auth";
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#FCF7FF" }}>
-      {!isAuth && <Header onMenuPress={() => setMenuOpen(true)} />}
+    <Provider store={store}>
+      <View style={{ flex: 1, backgroundColor: "#FCF7FF" }}>
+        {!isAuth && <Header onMenuPress={() => setMenuOpen(true)} />}
 
-      <Stack screenOptions={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }} />
 
-      {!isAuth && menuOpen && <SideMenu onClose={() => setMenuOpen(false)} />}
-    </View>
+        {!isAuth && menuOpen && <SideMenu onClose={() => setMenuOpen(false)} />}
+      </View>
+    </Provider>
   );
 }
