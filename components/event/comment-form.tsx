@@ -58,7 +58,7 @@ export const CommentsForm = ({
 
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Image
-            source={require("../../assets/images/send-comment.png")}
+            source={require("../../assets/img/send-a-comment.png")}
             style={styles.sendIcon}
           />
         </TouchableOpacity>

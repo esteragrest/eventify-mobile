@@ -1,5 +1,5 @@
 import { mapImageUrl } from "@/utils";
-import { EventItem, EventsResponse } from "../types/event";
+import { EventByIdResponse, EventItem, EventsResponse } from "../types";
 import { baseApi } from "./baseApi";
 
 export const eventsApi = baseApi.injectEndpoints({
@@ -29,7 +29,27 @@ export const eventsApi = baseApi.injectEndpoints({
         })),
       }),
     }),
+
+    getEventById: builder.query<EventByIdResponse, number>({
+      query: (id) => `/api/events/event/${id}`,
+
+      transformResponse: (res: EventByIdResponse) => ({
+        event: {
+          ...res.event,
+          photo: mapImageUrl(res.event.photo),
+        },
+
+        comments: res.comments.map((c) => ({
+          ...c,
+          commentatorPhoto: mapImageUrl(c.commentatorPhoto),
+        })),
+      }),
+    }),
   }),
 });
 
-export const { useGetWeeklyEventsQuery, useGetEventsQuery } = eventsApi;
+export const {
+  useGetWeeklyEventsQuery,
+  useGetEventsQuery,
+  useGetEventByIdQuery,
+} = eventsApi;

@@ -5,7 +5,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet, Text, View } from "react-native";
 
-export const EventRegistrationForm = () => {
+interface EventRegistrationFormProps {
+  eventId: number;
+}
+
+export const EventRegistrationForm = ({
+  eventId,
+}: EventRegistrationFormProps) => {
   const [serverError, setServerError] = useState("");
 
   const {
@@ -25,7 +31,7 @@ export const EventRegistrationForm = () => {
   });
 
   const fakeSubmit = (data: any) => {
-    console.log("FAKE REGISTRATION:", data);
+    console.log("FAKE REGISTRATION:", { eventId, ...data });
     reset();
   };
 

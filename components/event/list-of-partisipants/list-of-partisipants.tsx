@@ -1,60 +1,27 @@
 import { Button, Loader } from "@/components";
-import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ParticipantItem } from "./participant-item";
+import { Registration } from "@/store/types";
+import { useState } from "react";
 
-interface Registration {
-  id: number;
-  registeredUserId: number;
-  firstName: string;
-  lastName?: string;
-  photo?: any;
-  email: string;
-  phone: string;
-  participantsCount: number;
+interface ListOfParticipantsProps {
+  participants: Registration[];
+  isLoading?: boolean;
 }
 
-export const ListOfParticipants = () => {
-  const [registrations, setRegistrations] = useState<Registration[]>([]);
+export const ListOfParticipants = ({
+  participants,
+  isLoading = false,
+}: ListOfParticipantsProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoadingParticipants, setIsLoadingParticipants] = useState(true);
-
-  useEffect(() => {
-    setIsLoadingParticipants(true);
-
-    setTimeout(() => {
-      setRegistrations([
-        {
-          id: 1,
-          registeredUserId: 10,
-          firstName: "Анна",
-          lastName: "Иванова",
-          email: "anna@example.com",
-          phone: "+79998887766",
-          participantsCount: 2,
-        },
-        {
-          id: 2,
-          registeredUserId: 11,
-          firstName: "Павел",
-          lastName: "Сидоров",
-          email: "pavel@example.com",
-          phone: "+79995554433",
-          participantsCount: 1,
-        },
-      ]);
-
-      setIsLoadingParticipants(false);
-    }, 800);
-  }, []);
 
   const toggle = () => setIsOpen(!isOpen);
 
   return (
     <View style={styles.container}>
-      {isLoadingParticipants ? (
+      {isLoading ? (
         <Loader />
-      ) : registrations.length === 0 ? (
+      ) : participants.length === 0 ? (
         <Text style={styles.empty}>
           На это мероприятие ещё никто не зарегистрировался!
         </Text>
@@ -66,7 +33,7 @@ export const ListOfParticipants = () => {
 
           {isOpen && (
             <View style={styles.list}>
-              {registrations.map((reg) => (
+              {participants.map((reg) => (
                 <ParticipantItem key={reg.id} registration={reg} />
               ))}
             </View>

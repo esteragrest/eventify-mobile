@@ -6,4 +6,5 @@ export * from "./events-list";
 export * from "./header";
 export * from "./main";
 export * from "./modal";
+export * from "./private-content";
 export * from "./ui";

@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Button } from "./button";
 import { ContentOverlay } from "./content-overlay";
@@ -23,7 +23,6 @@ export const EventsCard = ({
   return (
     <View style={styles.container}>
       <View style={styles.info}>
-        {/* <Image source={photo} style={styles.image} /> */}
         <Image source={{ uri: photo }} style={styles.image} />
 
         <Text style={styles.title}>{title}</Text>
@@ -38,10 +37,16 @@ export const EventsCard = ({
       </View>
 
       <View style={styles.buttonWrapper}>
-        <Button backgroundColor="#E8FF59">
-          <Link href={`/events/${eventId}`} style={styles.linkText}>
-            Подробнее...
-          </Link>
+        <Button
+          backgroundColor="#E8FF59"
+          onPress={() =>
+            router.push({
+              pathname: "/events/[id]",
+              params: { id: String(eventId) },
+            })
+          }
+        >
+          <Text style={styles.linkText}>Подробнее...</Text>
         </Button>
       </View>
     </View>

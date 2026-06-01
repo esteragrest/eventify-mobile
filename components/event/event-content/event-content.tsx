@@ -27,7 +27,7 @@ export const EventContent = ({ event }: EventContentProps) => {
 
   return (
     <View style={styles.container}>
-      <Image source={photo} style={styles.image} />
+      <Image source={{ uri: photo }} style={styles.image} />
 
       <EventOptions
         options={[

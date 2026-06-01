@@ -16,7 +16,6 @@ export default function EventsScreen() {
 
   const events = data?.events ?? [];
   const lastPage = data?.lastPage ?? 1;
-  console.log("events", events);
 
   return (
     <ScrollView

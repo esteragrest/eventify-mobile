@@ -2,9 +2,10 @@ import { Button } from "@/components";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { EventCommentItem } from "./event-comment-item";
+import { CommentItem } from "@/store/types";
 
 interface EventCommentsProps {
-  comments: any[]; //TODO: мб тут тип пересмотреть заменить
+  comments: CommentItem[];
   onReply: (parentId: number | null, commentatorName: string) => void;
   onDelete: (commentId: number) => void;
   userId: number;

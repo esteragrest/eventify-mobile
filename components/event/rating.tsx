@@ -7,7 +7,11 @@ interface RatingResponse {
   isRated: boolean;
 }
 
-export const Rating = () => {
+interface RatingProps {
+  eventId: number;
+}
+
+export const Rating = ({ eventId }: RatingProps) => {
   const [hovered, setHovered] = useState<number>(0);
   const [selected, setSelected] = useState<number>(0);
   const [isRegistered, setIsRegistered] = useState<boolean>(false);
@@ -15,6 +19,7 @@ export const Rating = () => {
 
   useEffect(() => {
     const fakeFetch = async (): Promise<RatingResponse> => {
+      console.log("CHECK RATING FOR EVENT:", eventId);
       return {
         isRegistered: true,
         isRated: false,
@@ -30,14 +35,14 @@ export const Rating = () => {
         setIsRegistered(false);
         setIsRated(false);
       });
-  }, []);
+  }, [eventId]);
 
   const handleClick = (rating: number) => {
     setSelected(rating);
   };
 
   const sendRating = () => {
-    console.log("SEND RATING:", selected);
+    console.log("SEND RATING:", { eventId, rating: selected });
     setIsRated(true);
   };
 
