@@ -1,7 +1,12 @@
+import { useLoginMutation } from "@/store/api/authApi";
+import { setToken, setUser } from "@/store/slices/userSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Image, ScrollView, StyleSheet } from "react-native";
+import { useDispatch } from "react-redux";
 
 import {
   AuthFormContainer,
@@ -18,7 +23,9 @@ import { loginValidationSchema } from "../../validations";
 
 export default function AuthorizationScreen() {
   const [serverError, setServerError] = useState("");
-  const [isLoading] = useState(false); // пока заглушка
+
+  const dispatch = useDispatch();
+  const [login, { isLoading }] = useLoginMutation();
 
   const {
     control,
@@ -32,9 +39,26 @@ export default function AuthorizationScreen() {
     resolver: yupResolver(loginValidationSchema),
   });
 
-  const onSubmit = (data: any) => {
-    // пока без действий
-    console.log("LOGIN DATA:", data);
+  const onSubmit = async ({ email, password }: any) => {
+    setServerError("");
+
+    try {
+      const res = await login({ email, password }).unwrap();
+
+      if (res.error) {
+        setServerError(res.error);
+        return;
+      }
+
+      dispatch(setUser(res.user));
+      dispatch(setToken(res.token));
+
+      await AsyncStorage.setItem("token", res.token);
+
+      router.replace("/");
+    } catch (err) {
+      setServerError(`Ошибка сервера: ${err}`);
+    }
   };
 
   const errorMessage =
@@ -59,20 +83,6 @@ export default function AuthorizationScreen() {
             />
 
             <Form>
-              {/* <Input
-                name="email"
-                control={control}
-                placeholder="Введите email"
-                onChangeText={() => setServerError("")}
-              />
-
-              <Input
-                name="password"
-                control={control}
-                placeholder="Введите пароль"
-                secureTextEntry
-                onChangeText={() => setServerError("")}
-              /> */}
               <Input
                 name="email"
                 control={control}
