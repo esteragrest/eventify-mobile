@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
+    gap: 4
   },
   optionName: {
     opacity: 0.7,

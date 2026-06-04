@@ -1,17 +1,10 @@
-import { Image, StyleSheet, View } from "react-native";
+import { ContentOverlay } from "@/components";
+import { Event } from "@/store/types";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { EventOptions } from "./event-options";
 
 interface EventContentProps {
-  event: {
-    title: string;
-    description: string;
-    type: string;
-    payment: string;
-    address: string;
-    ageLimit: string;
-    maxParticipants?: number | null;
-    photo: any;
-  };
+  event: Event;
 }
 
 export const EventContent = ({ event }: EventContentProps) => {
@@ -23,11 +16,21 @@ export const EventContent = ({ event }: EventContentProps) => {
     ageLimit,
     maxParticipants,
     photo,
+    eventDate,
+    eventTime,
   } = event;
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: photo }} style={styles.image} />
+      {photo && <Image source={{ uri: photo }} style={styles.image} />}
+
+      <View style={styles.dateTimeContainer}>
+        <Text>{eventDate}</Text>
+
+        <ContentOverlay>
+          <Text>{eventTime}</Text>
+        </ContentOverlay>
+      </View>
 
       <EventOptions
         options={[
@@ -67,5 +70,14 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 10,
     resizeMode: "cover",
+  },
+
+  dateTimeContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    gap: 4,
+    fontSize: 16,
   },
 });

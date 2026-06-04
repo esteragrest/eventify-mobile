@@ -11,9 +11,9 @@ export const EventHeaderItem = ({ children }: EventHeaderItemProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column",
+    alignItems: "flex-start",
     justifyContent: "center",
-    gap: 15,
+    gap: 4,
   },
 });

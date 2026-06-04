@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     gap: 15,
-    paddingVertical: 15,
   },
 
   list: {

@@ -70,15 +70,7 @@ export const EventHeader = ({ event, accessRights }: EventHeaderProps) => {
         )}
       </EventHeaderItem>
 
-      <EventHeaderItem>
-        <Text style={styles.date}>{eventDate}</Text>
-
-        <ContentOverlay>
-          <Text style={styles.time}>{eventTime}</Text>
-        </ContentOverlay>
-
-        {accessRights && <ControlButtons onEdit={onEdit} onDelete={onDelete} />}
-      </EventHeaderItem>
+      {accessRights && <ControlButtons onEdit={onEdit} onDelete={onDelete} />}
     </View>
   );
 };

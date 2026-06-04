@@ -32,6 +32,7 @@ export default function EventScreen() {
   const eventId = Number(id);
 
 
+  //TODO: мб заменить на вынесенный селектор
   const user = useSelector((state: any) => state.user.user);
   const userId = user?.id ?? null;
   const userRoleId = user?.roleId ?? null;

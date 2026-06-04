@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     borderColor: "rgb(192,162,226)",
     paddingVertical: 10,
     paddingHorizontal: 12,
-    textAlignVertical: "top", // важно: текст начинается сверху
+    textAlignVertical: "top",
     fontSize: 16,
   },
 });

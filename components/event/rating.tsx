@@ -86,9 +86,8 @@ export const Rating = ({ eventId }: RatingProps) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginTop: 20,
     flexDirection: "column",
-    gap: 10,
+    alignItems: 'center'
   },
 
   title: {
