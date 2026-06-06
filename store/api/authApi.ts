@@ -1,6 +1,7 @@
 import { mapImageUrl, mapPersonalData } from "@/utils";
 import { baseApi } from "./baseApi";
 
+//TODO: вынести в типы типы
 interface LoginRequest {
   email: string;
   password: string;

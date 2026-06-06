@@ -8,3 +8,4 @@ export * from "./main";
 export * from "./modal";
 export * from "./private-content";
 export * from "./ui";
+export * from "./user-profile";
