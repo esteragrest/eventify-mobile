@@ -6,7 +6,6 @@
 //   endpoints: (builder) => ({
 //     getWeeklyEvents: builder.query<EventItem[], void>({
 //       query: () => "/api/events/weekly-events",
-
 //       transformResponse: (events: EventItem[]) =>
 //         events.map((event) => ({
 //           ...event,
@@ -20,7 +19,6 @@
 //     >({
 //       query: ({ page, limit, title }) =>
 //         `/api/events?limit=${limit}&page=${page}&title=${title ?? ""}`,
-
 //       transformResponse: (response: EventsResponse) => ({
 //         ...response,
 //         events: response.events.map((event) => ({
@@ -38,11 +36,26 @@
 //           ...res.event,
 //           photo: mapImageUrl(res.event.photo),
 //         },
-
 //         comments: res.comments.map((c) => ({
 //           ...c,
 //           commentatorPhoto: mapImageUrl(c.commentatorPhoto),
 //         })),
+//       }),
+//     }),
+
+//     createEvent: builder.mutation({
+//       query: (body) => ({
+//         url: "/api/events",
+//         method: "POST",
+//         body,
+//       }),
+//     }),
+
+//     updateEvent: builder.mutation({
+//       query: ({ id, body }) => ({
+//         url: `/api/events/${id}`,
+//         method: "PUT",
+//         body,
 //       }),
 //     }),
 //   }),
@@ -52,6 +65,8 @@
 //   useGetWeeklyEventsQuery,
 //   useGetEventsQuery,
 //   useGetEventByIdQuery,
+//   useCreateEventMutation,
+//   useUpdateEventMutation,
 // } = eventsApi;
 
 import { mapImageUrl } from "@/utils";
@@ -67,6 +82,7 @@ export const eventsApi = baseApi.injectEndpoints({
           ...event,
           photo: mapImageUrl(event.photo),
         })),
+      providesTags: ["Events"],
     }),
 
     getEvents: builder.query<
@@ -82,11 +98,12 @@ export const eventsApi = baseApi.injectEndpoints({
           photo: mapImageUrl(event.photo),
         })),
       }),
+      providesTags: ["Events"],
     }),
 
     getEventById: builder.query<EventByIdResponse, number>({
       query: (id) => `/api/events/event/${id}`,
-
+      
       transformResponse: (res: EventByIdResponse) => ({
         event: {
           ...res.event,
@@ -97,22 +114,28 @@ export const eventsApi = baseApi.injectEndpoints({
           commentatorPhoto: mapImageUrl(c.commentatorPhoto),
         })),
       }),
+      providesTags: (result, error, id) => [{ type: "Event", id }],
     }),
 
-    createEvent: builder.mutation({
+    createEvent: builder.mutation<any, any>({
       query: (body) => ({
         url: "/api/events",
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Events"],
     }),
 
-    updateEvent: builder.mutation({
+    updateEvent: builder.mutation<any, { id: number; body: any }>({
       query: ({ id, body }) => ({
         url: `/api/events/${id}`,
         method: "PUT",
         body,
       }),
+      invalidatesTags: (result, error, { id }) => [
+        "Events",
+        { type: "Event", id },
+      ],
     }),
   }),
 });
@@ -124,3 +147,4 @@ export const {
   useCreateEventMutation,
   useUpdateEventMutation,
 } = eventsApi;
+

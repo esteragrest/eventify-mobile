@@ -1,7 +1,10 @@
-import { View, Text, StyleSheet } from "react-native";
-import { EventHeaderItem } from "./event-header-item";
 import { ContentOverlay, ControlButtons } from "@/components";
-import { useState, useEffect } from "react";
+import { setEvent } from "@/store/slices";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { useDispatch } from "react-redux";
+import { EventHeaderItem } from "./event-header-item";
 
 const hasEventPassed = (date: string): boolean => false;
 
@@ -22,14 +25,13 @@ export interface EventHeaderProps {
 }
 
 export const EventHeader = ({ event, accessRights }: EventHeaderProps) => {
-  const {
-    id,
-    title,
-    organizerFirstName,
-    organizerLastName,
-    eventDate,
-    eventTime,
-  } = event;
+  const onEdit = () => {
+    dispatch(setEvent(event));
+    router.push(`/events/edit/${event.id}`);
+  };
+
+  const { id, title, organizerFirstName, organizerLastName, eventDate } = event;
+  const dispatch = useDispatch();
 
   const [averageRating, setAverageRating] = useState<number | null>(null);
 
@@ -42,10 +44,6 @@ export const EventHeader = ({ event, accessRights }: EventHeaderProps) => {
       .then(({ averageRating }) => setAverageRating(averageRating))
       .catch(() => setAverageRating(null));
   }, [isPastEvent]);
-
-  const onEdit = (): void => {
-    console.log("EDIT EVENT", id);
-  };
 
   const onDelete = (): void => {
     console.log("DELETE EVENT", id);

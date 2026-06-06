@@ -13,17 +13,27 @@ import {
   useUpdateEventMutation,
 } from "@/store/api/eventsApi";
 
-import { Button } from "@/components/ui/button";
-import { CustomCheckbox } from "@/components/ui/custom-checkbox";
-import { DateTimeInput } from "@/components/ui/date-time-input";
-import { FileInput } from "@/components/ui/file-input";
-import { Input } from "@/components/ui/input";
-import { SelectableMenu } from "@/components/ui/selectable-menu";
+// import { Button } from "@/components/ui/button";
+// import { CustomCheckbox } from "@/components/ui/custom-checkbox";
+// import { DateTimeInput } from "@/components/ui/date-time-input";
+// import { FileInput } from "@/components/ui/file-input";
+// import { Input } from "@/components/ui/input";
+// import { SelectableMenu } from "@/components/ui/selectable-menu";
 import { Textarea } from "@/components/ui/textarea";
 
 import { AGE_LIMIT_TYPE, PAYMENT_TYPE } from "@/constants";
+import { convertDate, convertTime } from "@/utils";
 import { eventValidationSchema } from "@/validations";
-import { ErrorMessage, FormRow } from "../ui";
+import {
+  ErrorMessage,
+  FormRow,
+  Button,
+  CustomCheckbox,
+  DateTimeInput,
+  FileInput,
+  Input,
+  SelectableMenu,
+} from "../ui";
 
 type EventFormValues = {
   photo: string;
@@ -81,19 +91,19 @@ export const EventFormScreen = () => {
     }
 
     if (data?.event) {
+      const e = data.event;
+
       reset({
-        photo: data.event.photo || "",
-        title: data.event.title || "",
-        description: data.event.description || "",
-        event_date: data.event.eventDate || "",
-        event_time: data.event.eventTime || "",
-        age_limit: data.event.ageLimit || "",
-        payment: data.event.payment || "",
-        address: data.event.address || "",
-        type: data.event.type === "closed",
-        max_participants: data.event.maxParticipants
-          ? String(data.event.maxParticipants)
-          : "",
+        photo: e.photo || "",
+        title: e.title || "",
+        description: e.description || "",
+        event_date: convertDate(e.eventDate),
+        event_time: convertTime(e.eventTime),
+        age_limit: e.ageLimit || "",
+        payment: e.payment || "",
+        address: e.address || "",
+        type: e.type === "closed",
+        max_participants: e.maxParticipants ? String(e.maxParticipants) : "",
       });
     }
   }, [data, isEditing, reset]);
@@ -109,7 +119,7 @@ export const EventFormScreen = () => {
       router.replace(`/events/${numericId}`);
     } else {
       const res = await createEvent(payload).unwrap();
-      router.replace(`/events/${res.id}`);
+      router.replace(`/events/${res.event.id}`);
     }
   };
 
@@ -143,7 +153,7 @@ export const EventFormScreen = () => {
       />
 
       <FormRow>
-        <DateTimeInput
+        {/* <DateTimeInput
           type="date"
           label="Дата проведения"
           onChange={(date) => {
@@ -154,6 +164,25 @@ export const EventFormScreen = () => {
         <DateTimeInput
           type="time"
           label="Время проведения"
+          onChange={(date) => {
+            const time = date.toTimeString().slice(0, 5);
+            setValue("event_time", time);
+          }}
+        /> */}
+        <DateTimeInput
+          type="date"
+          label="Дата проведения"
+          value={watch("event_date")}
+          onChange={(date) => {
+            const iso = date.toISOString().slice(0, 10);
+            setValue("event_date", iso);
+          }}
+        />
+
+        <DateTimeInput
+          type="time"
+          label="Время проведения"
+          value={watch("event_time")}
           onChange={(date) => {
             const time = date.toTimeString().slice(0, 5);
             setValue("event_time", time);
