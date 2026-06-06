@@ -17,7 +17,7 @@ export const ItemMainInfo = ({
 }: ItemMainInfoProps) => {
   return (
     //TODO: чекнуть ошибки типов
-    <Link href={to} asChild>
+    <Link href={to}>
       <View style={styles.container}>
         <Image
           source={
