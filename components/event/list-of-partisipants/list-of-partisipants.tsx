@@ -47,7 +47,6 @@ export const ListOfParticipants = ({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginTop: 20,
     flexDirection: "column",
     gap: 20,
   },
@@ -55,6 +54,7 @@ const styles = StyleSheet.create({
   empty: {
     fontSize: 16,
     fontWeight: "500",
+    textAlign: 'center'
   },
 
   list: {

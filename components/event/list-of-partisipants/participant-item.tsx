@@ -1,5 +1,5 @@
-import { View, StyleSheet } from "react-native";
-import { ListItemContainer, ItemMainInfo } from "@/components";
+import { ItemMainInfo, ListItemContainer } from "@/components";
+import { StyleSheet, View } from "react-native";
 import { OptionItem } from "../../ui";
 
 export interface ParticipantItemProps {
@@ -34,7 +34,8 @@ export const ParticipantItem = ({ registration }: ParticipantItemProps) => {
           to={`/profile/${registeredUserId}`}
         >
           <View>
-            <OptionItem optionName="Email:" description={email} />
+            {/* <OptionItem optionName="Email:" description={email} /> */}
+            {email}
           </View>
         </ItemMainInfo>
 
