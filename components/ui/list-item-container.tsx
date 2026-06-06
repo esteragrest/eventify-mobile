@@ -8,9 +8,6 @@ export interface ListItemContainerProps {
 export const ListItemContainer = ({ children }: ListItemContainerProps) => {
   return (
     <View style={styles.container}>
-      {/* {React.Children.map(children, (child) => (
-        <View style={styles.child}>{child}</View>
-      ))} */}
       {children}
     </View>
   );

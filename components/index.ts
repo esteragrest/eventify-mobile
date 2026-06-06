@@ -9,3 +9,4 @@ export * from "./modal";
 export * from "./private-content";
 export * from "./ui";
 export * from "./user-profile";
+export * from './user-profile-screen'

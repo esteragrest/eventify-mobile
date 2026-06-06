@@ -1,4 +1,5 @@
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useDispatch } from "react-redux";
 
@@ -8,7 +9,6 @@ import { Button, DeleteButtons } from "../ui";
 
 import { useRemoveUserMutation } from "@/store/api";
 import { logout } from "@/store/slices";
-import { useState } from "react";
 
 interface UserProfileHeaderProps {
   id: number;
@@ -49,7 +49,6 @@ export const UserProfileHeader = ({
     try {
       await deleteUser(id).unwrap();
       setModalOpen(false);
-
       dispatch(logout());
       router.replace("/auth/login");
     } catch (err) {
@@ -59,7 +58,8 @@ export const UserProfileHeader = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.userInfoContainer}>
+      {/* Аватар + кнопки под ним */}
+      <View style={styles.leftColumn}>
         <Image
           source={
             photo ? { uri: photo } : require("@/assets/img/no-photo-1.jpg")
@@ -67,48 +67,52 @@ export const UserProfileHeader = ({
           style={styles.avatar}
         />
 
-        <View style={styles.userInfo}>
-          <Text style={styles.name}>
-            {lastName || ""} {firstName}
-          </Text>
-
-          {birthDate && <Text style={styles.text}>{birthDate}</Text>}
-          <Text style={styles.text}>{email}</Text>
-          {phone && <Text style={styles.text}>{phone}</Text>}
-
-          <View style={styles.eventsInfo}>
-            <Text style={styles.text}>Меропр.: {countUserEvents}</Text>
-            <Text style={styles.text}>Посещения: {countOfEventsAttended}</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.controlPanel}>
-        <Button backgroundColor="#C0A2E2" onPress={handleActiveEvents}>
-          {theseActiveEvents ? "Архив мероприятий" : "Активные мероприятия"}
-        </Button>
-
         {accessRights && (
-          <ControlButtons
-            onEdit={() =>
-              router.push({
-                pathname: `/profile/edit/${id}`,
-                params: {
-                  id,
-                  firstName,
-                  lastName,
-                  birthDate,
-                  email,
-                  phone,
-                  photo,
-                },
-              })
-            }
-            onDelete={() => setModalOpen(true)}
-          />
+          <View style={styles.controls}>
+            <ControlButtons
+              onEdit={() =>
+                router.push({
+                  pathname: `/profile/edit/${id}`,
+                  params: {
+                    id,
+                    firstName,
+                    lastName,
+                    birthDate,
+                    email,
+                    phone,
+                    photo,
+                  },
+                })
+              }
+              onDelete={() => setModalOpen(true)}
+            />
+          </View>
         )}
       </View>
 
+      {/* Информация о пользователе */}
+      <View style={styles.infoBlock}>
+        <Text style={styles.name}>
+          {firstName} {lastName || ""}
+        </Text>
+
+        <Text style={styles.text}>{email}</Text>
+        {phone && <Text style={styles.text}>{phone}</Text>}
+        {birthDate && <Text style={styles.text}>{birthDate}</Text>}
+
+        <View style={styles.stats}>
+          <Text style={styles.text}>Мероприятия: {countUserEvents}</Text>
+          <Text style={styles.text}>Посещения: {countOfEventsAttended}</Text>
+        </View>
+
+        <View style={styles.buttonWrapper}>
+          <Button backgroundColor="#C0A2E2" onPress={handleActiveEvents}>
+            {theseActiveEvents ? "Актуальные мероприятия" : "Архив мероприятий"}
+          </Button>
+        </View>
+      </View>
+
+      {/* Модалка удаления */}
       <Modal
         isOpen={modalOpen}
         image={require("@/assets/img/delete.png")}
@@ -129,52 +133,48 @@ export const UserProfileHeader = ({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    padding: 20,
+    paddingBottom: 25,
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
     gap: 20,
   },
 
-  userInfoContainer: {
-    flexDirection: "row",
+  leftColumn: {
     alignItems: "center",
-    gap: 12,
-    flexShrink: 1,
+    gap: 10,
   },
 
   avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 1.5,
-    borderColor: "#000",
+    width: 80,
+    height: 80,
+    borderRadius: 55,
   },
 
-  userInfo: {
+  controls: {
+    marginTop: 5,
+  },
+
+  infoBlock: {
+    flex: 1,
     flexDirection: "column",
     gap: 4,
-    flexShrink: 1,
   },
 
   name: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "600",
   },
 
   text: {
-    fontSize: 14,
+    fontSize: 12,
   },
 
-  eventsInfo: {
+  stats: {
     flexDirection: "row",
     gap: 20,
     marginTop: 6,
   },
 
-  controlPanel: {
-    flexDirection: "column",
-    alignItems: "flex-end",
-    gap: 10,
+  buttonWrapper: {
+    marginTop: 12,
   },
 });

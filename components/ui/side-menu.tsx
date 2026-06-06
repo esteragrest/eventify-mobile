@@ -1,3 +1,4 @@
+import { isAuthorized } from "@/utils";
 import { Link } from "expo-router";
 import { useEffect, useRef } from "react";
 import {
@@ -9,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { Button } from "./button";
 
 interface SideMenuProps {
@@ -18,6 +20,9 @@ interface SideMenuProps {
 export const SideMenu = ({ onClose }: SideMenuProps) => {
   const slideAnim = useRef(new Animated.Value(300)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const currentUser = useSelector((state: any) => state.user.user);
+  const isAuth = isAuthorized(currentUser?.id);
 
   useEffect(() => {
     Animated.parallel([
@@ -49,6 +54,8 @@ export const SideMenu = ({ onClose }: SideMenuProps) => {
     ]).start(() => onClose());
   };
 
+  const profileLink = isAuth ? "/profile" : "/auth/login";
+
   return (
     <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
       <Pressable style={StyleSheet.absoluteFill} onPress={closeMenu} />
@@ -77,7 +84,7 @@ export const SideMenu = ({ onClose }: SideMenuProps) => {
             <Text style={styles.navItem}>Мероприятия</Text>
           </Link>
 
-          <Link href="/profile" asChild>
+          <Link href={profileLink} asChild>
             <Text style={styles.navItem}>Профиль</Text>
           </Link>
         </View>
