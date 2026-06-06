@@ -8,8 +8,12 @@ interface DateTimeInputProps {
   onChange?: (value: Date) => void;
 }
 
-export const DateTimeInput = ({ type, label, onChange }: DateTimeInputProps) => {
-  const [value, setValue] = useState<Date>(new Date());
+export const DateTimeInput = ({
+  type,
+  label,
+  onChange,
+}: DateTimeInputProps) => {
+  const [value, setValue] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
 
   const handleChange = (_: any, selected?: Date) => {
@@ -21,21 +25,29 @@ export const DateTimeInput = ({ type, label, onChange }: DateTimeInputProps) => 
   };
 
   const formatted =
-    type === "date"
-      ? value.toLocaleDateString()
-      : value.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    value === null
+      ? label
+      : type === "date"
+        ? value.toLocaleDateString()
+        : value.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      {/* <Text style={styles.label}>{label}</Text> */}
 
       <TouchableOpacity style={styles.input} onPress={() => setOpen(true)}>
-        <Text style={styles.inputText}>{formatted}</Text>
+        <Text
+          style={[
+            styles.inputText,
+          ]}
+        >
+          {formatted}
+        </Text>
       </TouchableOpacity>
 
       {open && (
         <DateTimePicker
-          value={value}
+          value={value ?? new Date()}
           mode={type}
           display="default"
           onChange={handleChange}
@@ -52,10 +64,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     gap: 10,
+    minWidth: 150,
   },
   label: {
-    fontSize: 12,
+    fontSize: 14,
     color: "black",
   },
   input: {
@@ -63,7 +77,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   inputText: {
-    fontSize: 12,
+    fontSize: 14,
     color: "black",
   },
 });

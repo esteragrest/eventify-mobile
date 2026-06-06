@@ -1,3 +1,4 @@
+import { isAuthorized } from "@/utils";
 import { Link } from "expo-router";
 import {
   Image,
@@ -6,11 +7,16 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { Button } from "../ui";
 
 export const Banner = () => {
+  const currentUserRoleId = useSelector((state: any) => state.user?.user?.roleId);
   const { width } = useWindowDimensions();
   const isMobile = width <= 480;
+
+  const isAuth = isAuthorized(currentUserRoleId);
+  const bannerLink = isAuth ? "/events/create" : "/auth/login";
 
   return (
     <View style={styles.container}>
@@ -33,7 +39,7 @@ export const Banner = () => {
         </Text>
 
         <Button backgroundColor="#E8FF59">
-          <Link href="/event/create">Создать мероприятие</Link>
+          <Link href={bannerLink}>Создать мероприятие</Link>
         </Button>
       </View>
     </View>

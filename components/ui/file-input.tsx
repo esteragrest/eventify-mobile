@@ -8,6 +8,49 @@ interface FileInputProps {
   defaultImage?: string;
 }
 
+// export const FileInput = ({
+//   register,
+//   setValue,
+//   defaultImage,
+// }: FileInputProps) => {
+//   const [preview, setPreview] = useState<string | null>(defaultImage || null);
+
+//   useEffect(() => {
+//     if (defaultImage) {
+//       setPreview(defaultImage);
+//       setValue("photo", defaultImage);
+//     }
+//   }, [defaultImage, setValue]);
+
+//   const pickImage = async () => {
+//     const result = await ImagePicker.launchImageLibraryAsync({
+//       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+//       quality: 1,
+//     });
+
+//     if (!result.canceled) {
+//       const uri = result.assets[0].uri;
+//       setPreview(uri);
+//       setValue("photo", uri);
+//     }
+//   };
+
+//   return (
+//     <View style={styles.container}>
+//       <TouchableOpacity onPress={pickImage} style={styles.imageWrapper}>
+//         <Image
+//           source={
+//             preview
+//               ? { uri: preview }
+//               : require("../../public/img/add-photo.svg")
+//           }
+//           style={styles.image}
+//         />
+//       </TouchableOpacity>
+//     </View>
+//   );
+// };
+
 export const FileInput = ({
   register,
   setValue,
@@ -20,7 +63,7 @@ export const FileInput = ({
       setPreview(defaultImage);
       setValue("photo", defaultImage);
     }
-  }, [defaultImage, setValue]);
+  }, [defaultImage]);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -30,6 +73,13 @@ export const FileInput = ({
 
     if (!result.canceled) {
       const uri = result.assets[0].uri;
+
+      // проверка формата
+      if (!/\.(jpg|jpeg|png|webp)$/i.test(uri)) {
+        alert("Поддерживаются только JPG, PNG, WEBP");
+        return;
+      }
+
       setPreview(uri);
       setValue("photo", uri);
     }
@@ -42,7 +92,7 @@ export const FileInput = ({
           source={
             preview
               ? { uri: preview }
-              : require("../../public/img/add-photo.svg")
+              : require("../../assets/img/add-photo.svg")
           }
           style={styles.image}
         />
@@ -50,6 +100,7 @@ export const FileInput = ({
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

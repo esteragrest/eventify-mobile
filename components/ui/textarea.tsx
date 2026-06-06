@@ -35,8 +35,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "rgb(192,162,226)",
     paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     textAlignVertical: "top",
-    fontSize: 16,
+    fontSize: 14,
+    backgroundColor: '#fff'
   },
 });

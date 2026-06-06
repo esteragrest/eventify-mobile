@@ -10,7 +10,7 @@ export const baseApi = createApi({
     prepareHeaders: async (headers) => {
       const token = await AsyncStorage.getItem("token");
 
-      if (token) {
+      if (token && token !== "null") {
         headers.set("Authorization", `Bearer ${token}`);
       }
 

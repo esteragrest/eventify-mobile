@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Animated,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -34,7 +35,7 @@ export const SelectableMenu = ({
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const selected = options.find((o) => o.value == selectedValue);
+    const selected = options.find((o) => o.value === selectedValue);
     setSelectedOption(selected ? selected.title : title);
   }, [selectedValue, options, title]);
 
@@ -71,12 +72,12 @@ export const SelectableMenu = ({
       <TouchableOpacity style={styles.selectButton} onPress={toggleMenu}>
         <Text style={styles.selectedText}>{selectedOption}</Text>
 
-        {/* <Animated.View style={{ transform: [{ rotate }] }}>
+        <Animated.View style={{ transform: [{ rotate }] }}>
           <Image
-            source={require("../../../assets/select.png")}
+            source={require("../../assets/img/select.svg")}
             style={styles.icon}
           />
-        </Animated.View> */}
+        </Animated.View>
       </TouchableOpacity>
 
       {/* Выпадающий список */}
@@ -101,7 +102,7 @@ export const SelectableMenu = ({
 
 const styles = StyleSheet.create({
   container: {
-    minWidth: 200,
+    minWidth: 150,
     paddingVertical: 10,
     position: "relative",
   },
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
   },
 
   selectedText: {
-    fontSize: 16,
+    fontSize: 14,
   },
 
   icon: {
