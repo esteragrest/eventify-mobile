@@ -1,12 +1,17 @@
-import { ContentOverlay, ControlButtons } from "@/components";
+import { hasEventPassed } from "@/app/events/utils";
+import {
+  ContentOverlay,
+  ControlButtons,
+  Modal,
+  DeleteButtons,
+} from "@/components";
+import { useDeleteEventMutation } from "@/store/api";
 import { setEvent } from "@/store/slices";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { EventHeaderItem } from "./event-header-item";
-
-const hasEventPassed = (date: string): boolean => false;
 
 const fakeRequest = async (): Promise<{ averageRating: number }> => ({
   averageRating: 4.7,
@@ -32,8 +37,10 @@ export const EventHeader = ({ event, accessRights }: EventHeaderProps) => {
 
   const { id, title, organizerFirstName, organizerLastName, eventDate } = event;
   const dispatch = useDispatch();
+  const [deleteEvent] = useDeleteEventMutation();
 
   const [averageRating, setAverageRating] = useState<number | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const isPastEvent = hasEventPassed(eventDate);
 
@@ -45,9 +52,23 @@ export const EventHeader = ({ event, accessRights }: EventHeaderProps) => {
       .catch(() => setAverageRating(null));
   }, [isPastEvent]);
 
-  const onDelete = (): void => {
-    console.log("DELETE EVENT", id);
+  const handleDeleteEvent = async () => {
+    try {
+      await deleteEvent(id).unwrap();
+      setModalOpen(false);
+      router.replace("/events");
+    } catch (err) {
+      console.log("Ошибка удаления:", err);
+    }
   };
+
+  const onDelete = () => {
+    setModalOpen(true);
+  };
+
+  const onChancel = () => {
+    setModalOpen(false);
+  }
 
   return (
     <View style={styles.container}>
@@ -69,6 +90,17 @@ export const EventHeader = ({ event, accessRights }: EventHeaderProps) => {
       </EventHeaderItem>
 
       {accessRights && <ControlButtons onEdit={onEdit} onDelete={onDelete} />}
+
+      <Modal
+        isOpen={modalOpen}
+        image={require("../../../assets/img/delete.png")}
+        title="Удалить мероприятие?"
+        text="После удаления мероприятие исчезнет из списка и станет недоступным."
+        bannerColor="#C0A2E2"
+        onClose={onChancel}
+      >
+        <DeleteButtons onDelete={handleDeleteEvent} onChancel={onChancel} />
+      </Modal>
     </View>
   );
 };

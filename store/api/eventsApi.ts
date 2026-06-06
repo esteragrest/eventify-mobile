@@ -70,7 +70,12 @@
 // } = eventsApi;
 
 import { mapImageUrl } from "@/utils";
-import { EventByIdResponse, EventItem, EventsResponse } from "../types";
+import {
+  DeleteEventResponse,
+  EventByIdResponse,
+  EventItem,
+  EventsResponse,
+} from "../types";
 import { baseApi } from "./baseApi";
 
 export const eventsApi = baseApi.injectEndpoints({
@@ -103,7 +108,7 @@ export const eventsApi = baseApi.injectEndpoints({
 
     getEventById: builder.query<EventByIdResponse, number>({
       query: (id) => `/api/events/event/${id}`,
-      
+
       transformResponse: (res: EventByIdResponse) => ({
         event: {
           ...res.event,
@@ -137,6 +142,14 @@ export const eventsApi = baseApi.injectEndpoints({
         { type: "Event", id },
       ],
     }),
+
+    deleteEvent: builder.mutation<DeleteEventResponse, number>({
+      query: (id) => ({
+        url: `/api/events/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Events"],
+    }),
   }),
 });
 
@@ -146,5 +159,5 @@ export const {
   useGetEventByIdQuery,
   useCreateEventMutation,
   useUpdateEventMutation,
+  useDeleteEventMutation,
 } = eventsApi;
-

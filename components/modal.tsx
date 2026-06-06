@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
 import {
-  Animated,
   Image,
+  ImageProps,
+  Modal as RNModal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,73 +9,119 @@ import {
 } from "react-native";
 import { ContentOverlay } from "./ui";
 
+// export const Modal = ({ isOpen, image, title, text, children }: ModalProps) => {
+//   const scaleAnim = useRef(new Animated.Value(0.8)).current;
+//   const opacityAnim = useRef(new Animated.Value(0)).current;
+
+//   useEffect(() => {
+//     if (isOpen) {
+//       Animated.parallel([
+//         Animated.timing(scaleAnim, {
+//           toValue: 1,
+//           duration: 300,
+//           useNativeDriver: true,
+//         }),
+//         Animated.timing(opacityAnim, {
+//           toValue: 1,
+//           duration: 300,
+//           useNativeDriver: true,
+//         }),
+//       ]).start();
+//     }
+//   }, [isOpen]);
+
+//   if (!isOpen) return null;
+
+//   return (
+//     <View style={styles.overlayContainer}>
+//       <View style={styles.overlay} />
+
+//       <Animated.View
+//         style={[
+//           styles.modalContent,
+//           {
+//             opacity: opacityAnim,
+//             transform: [{ scale: scaleAnim }],
+//           },
+//         ]}
+//       >
+//         <TouchableOpacity style={styles.closeButton}>
+//           <Image
+//             source={require("../public/img/cross.png")}
+//             style={styles.closeIcon}
+//           />
+//         </TouchableOpacity>
+
+//         <View style={styles.banner}>
+//           {/* //TODO: пересмотреть тут */}
+//           <Image source={{ uri: image }} style={styles.bannerImage} />
+//         </View>
+
+//         <View style={styles.info}>
+//           <Text style={styles.title}>{title}</Text>
+
+//           <ContentOverlay>
+//             <Text style={styles.text}>{text}</Text>
+//           </ContentOverlay>
+
+//           {children}
+//         </View>
+//       </Animated.View>
+//     </View>
+//   );
+// };
+
 export interface ModalProps {
   isOpen: boolean;
-  image?: string;
+  image?: ImageProps;
   title: string;
   text: string;
   children?: React.ReactNode;
+  bannerColor?: string;
+  onClose?: () => void;
 }
 
-export const Modal = ({ isOpen, image, title, text, children }: ModalProps) => {
-  const scaleAnim = useRef(new Animated.Value(0.8)).current;
-  const opacityAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (isOpen) {
-      Animated.parallel([
-        Animated.timing(scaleAnim, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-        Animated.timing(opacityAnim, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
+export const Modal = ({
+  isOpen,
+  image,
+  title,
+  text,
+  children,
+  bannerColor,
+  onClose,
+}: ModalProps) => {
   return (
-    <View style={styles.overlayContainer}>
-      <View style={styles.overlay} />
+    <RNModal visible={isOpen} transparent animationType="fade">
+      <View style={styles.overlayContainer}>
+        <View style={styles.modalContent}>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Image
+              source={require("../public/img/cross.png")}
+              style={styles.closeIcon}
+            />
+          </TouchableOpacity>
 
-      <Animated.View
-        style={[
-          styles.modalContent,
-          {
-            opacity: opacityAnim,
-            transform: [{ scale: scaleAnim }],
-          },
-        ]}
-      >
-        <TouchableOpacity style={styles.closeButton}>
-          <Image
-            source={require("../public/img/cross.png")}
-            style={styles.closeIcon}
-          />
-        </TouchableOpacity>
+          <View
+            style={[
+              styles.banner,
+              { backgroundColor: bannerColor ?? "#E8FF59" },
+            ]}
+          >
+            <Image source={image} style={styles.bannerImage} />
+          </View>
 
-        <View style={styles.banner}>
-            {/* //TODO: пересмотреть тут */}
-          <Image source={{ uri: image }} style={styles.bannerImage} />
+          <View style={styles.info}>
+            <Text style={styles.title}>{title}</Text>
+
+            <ContentOverlay>
+              <Text style={styles.text}>{text}</Text>
+            </ContentOverlay>
+
+            {children}
+          </View>
         </View>
-
-        <View style={styles.info}>
-          <Text style={styles.title}>{title}</Text>
-
-          <ContentOverlay>
-            <Text style={styles.text}>{text}</Text>
-          </ContentOverlay>
-
-          {children}
-        </View>
-      </Animated.View>
-    </View>
+      </View>
+    </RNModal>
   );
 };
 
@@ -86,45 +132,47 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    zIndex: 20,
-  },
-  overlay: {
-    position: "absolute",
+    zIndex: 1000,
     backgroundColor: "rgba(0,0,0,0.7)",
-    width: "100%",
-    height: "100%",
   },
+
   modalContent: {
-    width: "80%",
-    height: "60%",
+    width: "90%",
+    height: 500,
     backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#000",
-    zIndex: 30,
+    overflow: "hidden",
+    justifyContent: "flex-start",
   },
+
   banner: {
     width: "100%",
-    height: "55%",
+    height: "50%",
     backgroundColor: "#E8FF59",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
   },
+
   bannerImage: {
-    width: 300,
-    height: 200,
+    width: "70%",
+    height: "70%",
     resizeMode: "contain",
-    opacity: 0.9,
+    marginTop: 75,
   },
+
   info: {
     padding: 20,
     alignItems: "center",
-    gap: 15,
+    gap: 12,
   },
+
   title: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: "600",
+    alignItems: "center",
+    textAlign: "center",
   },
   text: {
     fontSize: 16,

@@ -5,6 +5,7 @@ export * from "./content-overlay";
 export * from "./control-button";
 export * from "./custom-checkbox";
 export * from "./date-time-input";
+export * from "./delete-buttons";
 export * from "./error-message";
 export * from "./events-card";
 export * from "./events-not-found";

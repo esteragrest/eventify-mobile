@@ -50,4 +50,5 @@ export interface EventByIdResponse {
   comments: CommentItem[];
 }
 
+export type DeleteEventResponse = { message: string } | void;
 
