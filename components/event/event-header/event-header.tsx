@@ -2,20 +2,16 @@ import { hasEventPassed } from "@/app/events/utils";
 import {
   ContentOverlay,
   ControlButtons,
-  Modal,
   DeleteButtons,
+  Modal,
 } from "@/components";
-import { useDeleteEventMutation } from "@/store/api";
+import { useDeleteEventMutation, useGetAverageRatingQuery } from "@/store/api";
 import { setEvent } from "@/store/slices";
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { EventHeaderItem } from "./event-header-item";
-
-const fakeRequest = async (): Promise<{ averageRating: number }> => ({
-  averageRating: 4.7,
-});
 
 export interface EventHeaderProps {
   event: {
@@ -36,21 +32,16 @@ export const EventHeader = ({ event, accessRights }: EventHeaderProps) => {
   };
 
   const { id, title, organizerFirstName, organizerLastName, eventDate } = event;
-  const dispatch = useDispatch();
-  const [deleteEvent] = useDeleteEventMutation();
-
-  const [averageRating, setAverageRating] = useState<number | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-
   const isPastEvent = hasEventPassed(eventDate);
 
-  useEffect(() => {
-    if (!isPastEvent) return;
+  const dispatch = useDispatch();
+  const [deleteEvent] = useDeleteEventMutation();
+  const { data: avgData } = useGetAverageRatingQuery(event.id, {
+    skip: !isPastEvent,
+  });
+  const averageRating = avgData?.averageRating ?? null;
 
-    fakeRequest()
-      .then(({ averageRating }) => setAverageRating(averageRating))
-      .catch(() => setAverageRating(null));
-  }, [isPastEvent]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleDeleteEvent = async () => {
     try {
@@ -68,7 +59,7 @@ export const EventHeader = ({ event, accessRights }: EventHeaderProps) => {
 
   const onChancel = () => {
     setModalOpen(false);
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -133,6 +124,7 @@ const styles = StyleSheet.create({
   rating: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: 'center',
     gap: 4,
   },
 

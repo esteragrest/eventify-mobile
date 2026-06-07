@@ -6,4 +6,5 @@ export interface Registration {
   email: string;
   phone: string;
   participantsCount: number;
+  photo?: string;
 }
