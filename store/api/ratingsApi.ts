@@ -4,6 +4,7 @@ export const ratingsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAverageRating: builder.query<{ averageRating: number | null }, number>({
       query: (eventId) => `/api/ratings/event/${eventId}/average`,
+      providesTags: ["Rating"],
     }),
 
     getUserRating: builder.query<
@@ -11,6 +12,7 @@ export const ratingsApi = baseApi.injectEndpoints({
       number
     >({
       query: (eventId) => `/api/ratings/userRating/event/${eventId}`,
+      providesTags: ["UserRating"],
     }),
 
     addRating: builder.mutation<
@@ -26,7 +28,7 @@ export const ratingsApi = baseApi.injectEndpoints({
           rating,
         },
       }),
-      invalidatesTags: ["Rating"],
+      invalidatesTags: ["UserRating", "Rating"],
     }),
   }),
 });
