@@ -153,22 +153,6 @@ export const EventFormScreen = () => {
       />
 
       <FormRow>
-        {/* <DateTimeInput
-          type="date"
-          label="Дата проведения"
-          onChange={(date) => {
-            const iso = date.toISOString().slice(0, 10);
-            setValue("event_date", iso);
-          }}
-        />
-        <DateTimeInput
-          type="time"
-          label="Время проведения"
-          onChange={(date) => {
-            const time = date.toTimeString().slice(0, 5);
-            setValue("event_time", time);
-          }}
-        /> */}
         <DateTimeInput
           type="date"
           label="Дата проведения"

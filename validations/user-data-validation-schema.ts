@@ -2,22 +2,6 @@ import * as yup from "yup";
 import { emailSchema, firstNameSchema, lastNameSchema } from "../utils";
 
 export const userDataValidationShema = yup.object().shape({
-  // photo: yup
-  // 	.mixed()
-  // 	.nullable()
-  // 	.test(
-  // 		'isValidFileOrUrl',
-  // 		'Файл должен быть изображением (jpg, jpeg, png) или ссылкой',
-  // 		(value) => {
-  // 			if (!value) return true;
-
-  // 			if (typeof value === 'string') {
-  // 				return value.startsWith('http://') || value.startsWith('https://');
-  // 			}
-
-  // 			return ['image/jpeg', 'image/jpg', 'image/png'].includes(value.type);
-  // 		},
-  // 	),
   photo: yup
     .string()
     .nullable()

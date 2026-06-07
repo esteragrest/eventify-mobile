@@ -73,15 +73,6 @@ export const UserProfileHeader = ({
               onEdit={() =>
                 router.push({
                   pathname: `/profile/edit/${id}`,
-                  params: {
-                    id,
-                    firstName,
-                    lastName,
-                    birthDate,
-                    email,
-                    phone,
-                    photo,
-                  },
                 })
               }
               onDelete={() => setModalOpen(true)}

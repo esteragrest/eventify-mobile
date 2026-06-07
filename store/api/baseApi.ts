@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  tagTypes: ["Events", "Event"],
+  tagTypes: ["Events", "Event", "User", 'ME'],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://192.168.0.101:3000",
 
