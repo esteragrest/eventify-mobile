@@ -1,17 +1,21 @@
-import { EventsList, Pagination, Loader } from "@/components";
+import { EventsList, Loader, Pagination } from "@/components";
 import { useGetEventsQuery } from "@/store/api";
-import { ScrollView, StyleSheet, View } from "react-native";
 import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+
+import { useSelector } from "react-redux";
+
+const LIMIT = 6
 
 export default function EventsScreen() {
   const [page, setPage] = useState(1);
 
-  const limit = 6;
+  const searchPhrase = useSelector((state: any) => state.search.phrase);
 
   const { data, isLoading, isError } = useGetEventsQuery({
     page,
-    limit,
-    title: "",
+    limit: LIMIT,
+    title: searchPhrase,
   });
 
   const events = data?.events ?? [];
@@ -49,4 +53,3 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-

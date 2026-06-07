@@ -7,8 +7,42 @@ import {
   View,
 } from "react-native";
 
+// export const SearchInput = () => {
+//   const [value, setValue] = useState("");
+
+//   return (
+//     <View style={styles.container}>
+//       <TextInput
+//         style={styles.input}
+//         value={value}
+//         onChangeText={setValue}
+//         placeholder="Найти мероприятие..."
+//         placeholderTextColor="#00000060"
+//       />
+
+//       <TouchableOpacity style={styles.iconButton}>
+//         <Image
+//           source={require("../../public/img/search-1.png")}
+//           style={styles.icon}
+//         />
+//       </TouchableOpacity>
+//     </View>
+//   );
+// };
+
+import { setSearchPhrase } from "@/store/slices/searchSlice";
+import { useRouter } from "expo-router";
+import { useDispatch } from "react-redux";
+
 export const SearchInput = () => {
   const [value, setValue] = useState("");
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handleSearch = () => {
+    dispatch(setSearchPhrase(value));
+    router.push("/events");
+  };
 
   return (
     <View style={styles.container}>
@@ -18,9 +52,10 @@ export const SearchInput = () => {
         onChangeText={setValue}
         placeholder="Найти мероприятие..."
         placeholderTextColor="#00000060"
+        onSubmitEditing={handleSearch}
       />
 
-      <TouchableOpacity style={styles.iconButton}>
+      <TouchableOpacity style={styles.iconButton} onPress={handleSearch}>
         <Image
           source={require("../../public/img/search-1.png")}
           style={styles.icon}
