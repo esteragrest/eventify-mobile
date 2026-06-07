@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 
-import { useAddCommentMutation } from "@/store/api/commentsApi";
+import {
+  useAddCommentMutation,
+  useDeleteCommentMutation,
+} from "@/store/api/commentsApi";
 import { useGetEventByIdQuery } from "@/store/api/eventsApi";
 import { useGetParticipantsQuery } from "@/store/api/registrationsApi";
 
@@ -17,7 +20,7 @@ import {
   Rating,
 } from "@/components/event";
 
-import { Loader, PrivateContent } from "@/components";
+import { DeleteButtons, Loader, Modal, PrivateContent } from "@/components";
 import {
   useGetUserRatingQuery,
   useGetUserRegistrationsQuery,
@@ -144,6 +147,14 @@ import { hasEventPassed } from "./utils";
 // }
 
 export default function EventScreen() {
+  const [deleteModal, setDeleteModal] = useState<{
+    open: boolean;
+    id: number | null;
+  }>({
+    open: false,
+    id: null,
+  });
+
   const { id } = useLocalSearchParams();
   const eventId = Number(id);
 
@@ -169,6 +180,8 @@ export default function EventScreen() {
   });
 
   const [addComment] = useAddCommentMutation();
+
+  const [deleteComment] = useDeleteCommentMutation();
 
   const [localComments, setLocalComments] = useState(initialComments ?? []);
   const [parentId, setParentId] = useState<number | null>(null);
@@ -201,8 +214,25 @@ export default function EventScreen() {
     }
   };
 
-  const handleDeleteComment = (commentId: number) => {
-    console.log("DELETE COMMENT (TODO):", commentId);
+  const handleDeleteComment = async () => {
+    if (!deleteModal.id) return;
+
+    try {
+      await deleteComment(deleteModal.id).unwrap();
+
+      setLocalComments((prev) => prev.filter((c) => c.id !== deleteModal.id));
+
+      setParentId(null);
+      setCommentatorName("");
+
+      setDeleteModal({ open: false, id: null });
+    } catch (err) {
+      console.log("Ошибка удаления комментария:", err);
+    }
+  };
+
+  const onChancelDelete = () => {
+    setDeleteModal({ open: false, id: null });
   };
 
   const isAuth = isAuthorized(userRoleId);
@@ -236,11 +266,10 @@ export default function EventScreen() {
                     onAddComment={handleAddComment}
                   />
                 )}
-
                 <EventComments
                   comments={localComments}
                   onReply={handleReply}
-                  onDelete={handleDeleteComment}
+                  onDelete={(id) => setDeleteModal({ open: true, id })}
                   userId={userId ?? 0}
                   isOwner={isOwner}
                   userRole={userRoleId ?? ""}
@@ -263,6 +292,19 @@ export default function EventScreen() {
           </>
         )}
       </ScrollView>
+      <Modal
+        isOpen={deleteModal.open}
+        image={require("@/assets/img/delete.png")}
+        title="Удалить комментарий?"
+        text="После удаления комментарий исчезнет из списка."
+        bannerColor="#C0A2E2"
+        onClose={onChancelDelete}
+      >
+        <DeleteButtons
+          onDelete={handleDeleteComment}
+          onChancel={onChancelDelete}
+        />
+      </Modal>
     </PrivateContent>
   );
 }
