@@ -1,22 +1,6 @@
 import * as yup from 'yup';
 
 export const eventValidationSchema = yup.object().shape({
-  // photo: yup
-  // 	.mixed()
-  // 	.required('Фото обязательно')
-  // 	.test(
-  // 		'isValidFileOrUrl',
-  // 		'Файл должен быть изображением (jpg, jpeg, png) или ссылкой',
-  // 		(value) => {
-  // 			if (!value) return false;
-
-  // 			if (typeof value === 'string') {
-  // 				return value.startsWith('http://') || value.startsWith('https://');
-  // 			}
-
-  // 			return ['image/jpeg', 'image/jpg', 'image/png'].includes(value.type);
-  // 		},
-  // 	),
   photo: yup
     .string()
     .required("Фото обязательно")
@@ -26,12 +10,10 @@ export const eventValidationSchema = yup.object().shape({
       (value) => {
         if (!value) return false;
 
-        // если это ссылка
         if (value.startsWith("http://") || value.startsWith("https://")) {
           return true;
         }
 
-        // если это локальный URI (file:///…)
         return /\.(jpg|jpeg|png|webp)$/i.test(value);
       },
     ),

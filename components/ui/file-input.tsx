@@ -8,49 +8,6 @@ interface FileInputProps {
   defaultImage?: string;
 }
 
-// export const FileInput = ({
-//   register,
-//   setValue,
-//   defaultImage,
-// }: FileInputProps) => {
-//   const [preview, setPreview] = useState<string | null>(defaultImage || null);
-
-//   useEffect(() => {
-//     if (defaultImage) {
-//       setPreview(defaultImage);
-//       setValue("photo", defaultImage);
-//     }
-//   }, [defaultImage, setValue]);
-
-//   const pickImage = async () => {
-//     const result = await ImagePicker.launchImageLibraryAsync({
-//       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-//       quality: 1,
-//     });
-
-//     if (!result.canceled) {
-//       const uri = result.assets[0].uri;
-//       setPreview(uri);
-//       setValue("photo", uri);
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <TouchableOpacity onPress={pickImage} style={styles.imageWrapper}>
-//         <Image
-//           source={
-//             preview
-//               ? { uri: preview }
-//               : require("../../public/img/add-photo.svg")
-//           }
-//           style={styles.image}
-//         />
-//       </TouchableOpacity>
-//     </View>
-//   );
-// };
-
 export const FileInput = ({
   register,
   setValue,

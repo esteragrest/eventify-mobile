@@ -6,7 +6,6 @@ interface FormProps {
 }
 
 export const Form = ({ children }: FormProps) => {
-  //TODO: отправка формы будет происходить по кнопке
   return <View style={styles.form}>{children}</View>;
 };
 

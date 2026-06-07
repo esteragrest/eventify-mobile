@@ -54,6 +54,41 @@ export const usersApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
     }),
+
+    updateUser: builder.mutation<any, { id: number; data: any }>({
+      query: ({ id, data }) => {
+        const isNewPhoto = data.photo && typeof data.photo === "object";
+
+        if (isNewPhoto) {
+          const formData = new FormData();
+
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "photo") {
+              formData.append("photo", {
+                uri: value.uri,
+                name: "avatar.jpg",
+                type: "image/jpeg",
+              } as any);
+            } else {
+              formData.append(key, value as any);
+            }
+          });
+
+          return {
+            url: `/api/users/edit/${id}`,
+            method: "PUT",
+            body: formData,
+          };
+        }
+
+        return {
+          url: `/api/users/edit/${id}`,
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
@@ -61,4 +96,5 @@ export const {
   useGetUserProfileQuery,
   useGetUserRegistrationsQuery,
   useRemoveUserMutation,
+  useUpdateUserMutation,
 } = usersApi;
