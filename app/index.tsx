@@ -8,7 +8,6 @@ export default function HomeScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: 40,
           backgroundColor: "#FCF7FF",
         }}
       >

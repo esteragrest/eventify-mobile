@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import{ useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Animated, StyleSheet, Text } from "react-native";
 import { Button } from "./button";
 
@@ -8,7 +8,6 @@ export const EventsNotFound = () => {
   const floatAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
-  // fadeIn animation
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -17,7 +16,6 @@ export const EventsNotFound = () => {
     }).start();
   }, []);
 
-  // floating animation
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
@@ -35,7 +33,6 @@ export const EventsNotFound = () => {
     ).start();
   }, []);
 
-  // pulse animation
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
@@ -67,7 +64,7 @@ export const EventsNotFound = () => {
 
       <Animated.View style={{ transform: [{ scale: pulseAnim }] }}>
         <Button backgroundColor="#E8FF59">
-          <Link href="/event/create" style={styles.linkText}>
+          <Link href="/events/create" style={styles.linkText}>
             Создать мероприятие
           </Link>
         </Button>

@@ -1,47 +1,38 @@
 import { isAuthorized } from "@/utils";
 import { Link } from "expo-router";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { Button } from "../ui";
 
 export const Banner = () => {
-  const currentUserRoleId = useSelector((state: any) => state.user?.user?.roleId);
-  const { width } = useWindowDimensions();
-  const isMobile = width <= 480;
+  const currentUserRoleId = useSelector(
+    (state: any) => state.user?.user?.roleId,
+  );
 
   const isAuth = isAuthorized(currentUserRoleId);
   const bannerLink = isAuth ? "/events/create" : "/auth/login";
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../../public/img/main-page-3.png")}
-        style={styles.image}
-      />
-
       <View style={styles.textBlock}>
-        <Text style={[styles.title, isMobile && styles.titleMobile]}>
+        <Text style={[styles.title, styles.titleMobile]}>
           Станьте частью мира ярких событий!
         </Text>
 
-        <Text
-          style={[styles.description, isMobile && styles.descriptionMobile]}
-        >
+        <Text style={[styles.description, styles.descriptionMobile]}>
           Организуйте свои мероприятия или присоединяйтесь к тем, которые уже
           меняют мир. Всё это доступно в одном клике — начните создавать
           незабываемые моменты прямо сейчас!
         </Text>
 
-        <Button backgroundColor="#E8FF59">
+        <Button backgroundColor="#E8FF59" width={180}>
           <Link href={bannerLink}>Создать мероприятие</Link>
         </Button>
       </View>
+      <Image
+        source={require("../../public/img/main-page-3.png")}
+        style={styles.image}
+      />
     </View>
   );
 };
@@ -51,17 +42,18 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#E0C9FF",
     paddingTop: 40,
-    paddingBottom: 20,
+    // paddingBottom: 20,
     alignItems: "center",
     gap: 15,
     flexDirection: "column",
   },
 
   image: {
-    width: "90%",
+    width: "100%",
     height: undefined,
     aspectRatio: 1.4,
     resizeMode: "contain",
+    top: 37,
   },
 
   textBlock: {

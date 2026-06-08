@@ -1,34 +1,10 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
-// import { useSelector } from "react-redux";
-// import { selectUserRole } from "../../../selectors";
-// import { isAuthorized } from "../../../utils";
-import { Button } from "../ui";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export const Welcome = () => {
-  //   const userRoleId = useSelector(selectUserRole);
-  //   const isAuth = isAuthorized(userRoleId);
-
-  const { width } = useWindowDimensions();
-
-  const isMobile = width <= 767;
-  const isTablet = width <= 1024 && width > 767;
-  const isLarge = width >= 1701;
-
-  let titleSize = 48;
-  if (isLarge) titleSize = 60;
-  else if (isTablet) titleSize = 44;
-  else if (isMobile) titleSize = 32;
-
   return (
-    <View style={[styles.container, isMobile && styles.containerMobile]}>
-      <View style={[styles.textBlock, isMobile && styles.textBlockMobile]}>
-        <Text style={[styles.title, { fontSize: titleSize }]}>
+    <View style={[styles.container, styles.containerMobile]}>
+      <View style={[styles.textBlock, styles.textBlockMobile]}>
+        <Text style={[styles.title]}>
           Организуйте. Приглашайте. Наслаждайтесь.
         </Text>
 
@@ -37,25 +13,8 @@ export const Welcome = () => {
           бизнес-конференций. Планируйте события, приглашайте участников,
           управляйте списком гостей и создавайте незабываемые моменты.
         </Text>
-
-        <View style={styles.buttons}>
-          {/* {!isAuth ? (
-            <AuthButtons />
-          ) : (
-            <Button backgroundColor="#E8FF59">
-              <Link href="/event/create">Создать мероприятие</Link>
-            </Button>
-          )} */}
-          {/* TODO: добавить действие */}
-          <Button backgroundColor="#C0A2E2" width={170}>
-            Зарегистрироваться
-          </Button>
-          <Button border="2px solid #C0A2E2" width={150}>
-            Войти в аккаунт
-          </Button>
-        </View>
       </View>
-      <View style={[styles.banner, isMobile && styles.bannerMobile]}>
+      <View style={[styles.banner, styles.bannerMobile]}>
         <Image
           source={require("../../public/img/main-page.png")}
           style={styles.bannerImage}
@@ -92,6 +51,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "700",
     width: "100%",
+    fontSize: 32,
   },
 
   description: {
