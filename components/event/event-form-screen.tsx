@@ -1,11 +1,9 @@
-// components/event/event-form-screen.tsx
-
 import { yupResolver } from "@hookform/resolvers/yup";
-import { skipToken } from "@reduxjs/toolkit/query";
+import * as Clipboard from "expo-clipboard";
 import { router, useLocalSearchParams } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import {
   useCreateEventMutation,
@@ -13,24 +11,20 @@ import {
   useUpdateEventMutation,
 } from "@/store/api/eventsApi";
 
-// import { Button } from "@/components/ui/button";
-// import { CustomCheckbox } from "@/components/ui/custom-checkbox";
-// import { DateTimeInput } from "@/components/ui/date-time-input";
-// import { FileInput } from "@/components/ui/file-input";
-// import { Input } from "@/components/ui/input";
-// import { SelectableMenu } from "@/components/ui/selectable-menu";
 import { Textarea } from "@/components/ui/textarea";
 
 import { AGE_LIMIT_TYPE, PAYMENT_TYPE } from "@/constants";
-import { convertDate, convertTime } from "@/utils";
+import { convertDate, convertTime, generateEventAccessLink } from "@/utils";
 import { eventValidationSchema } from "@/validations";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { Modal } from "../modal";
 import {
-  ErrorMessage,
-  FormRow,
   Button,
   CustomCheckbox,
   DateTimeInput,
+  ErrorMessage,
   FileInput,
+  FormRow,
   Input,
   SelectableMenu,
 } from "../ui";
@@ -49,12 +43,15 @@ type EventFormValues = {
 };
 
 export const EventFormScreen = () => {
+  const [closedModalOpen, setClosedModalOpen] = useState(false);
+  const [generatedLink, setGeneratedLink] = useState("");
+
   const { id } = useLocalSearchParams();
-  const numericId = id ? Number(id) : undefined;
+  const numericId = Number(id);
   const isEditing = !!numericId;
 
   const { data } = useGetEventByIdQuery(
-    numericId !== undefined ? numericId : skipToken,
+    numericId ? { id: numericId } : skipToken,
   );
 
   const [createEvent] = useCreateEventMutation();
@@ -114,12 +111,25 @@ export const EventFormScreen = () => {
       type: form.type ? "closed" : "open",
     };
 
-    if (isEditing) {
-      await updateEvent({ id: numericId, body: payload }).unwrap();
-      router.replace(`/events/${numericId}`);
-    } else {
+    try {
+      if (isEditing) {
+        await updateEvent({ id: numericId, body: payload }).unwrap();
+        router.replace(`/events/${numericId}`);
+        return;
+      }
+
       const res = await createEvent(payload).unwrap();
+
+      if (payload.type === "closed" && res.link) {
+        const link = generateEventAccessLink(res.event.id, res.link);
+        setGeneratedLink(link);
+        setClosedModalOpen(true);
+        return;
+      }
+
       router.replace(`/events/${res.event.id}`);
+    } catch (err) {
+      console.log("Ошибка создания:", err);
     }
   };
 
@@ -212,25 +222,43 @@ export const EventFormScreen = () => {
       />
 
       {!isEditing && (
-        // <CustomCheckbox content="Сделать мое мероприятие закрытым" />
         <CustomCheckbox
           content="Сделать мое мероприятие закрытым"
           defaultChecked={watch("type")}
           onChange={(checked) => setValue("type", checked)}
         />
-        // если нужно связать с формой:
-        // onChange раскомментировать в CustomCheckbox и тут:
-        // <CustomCheckbox
-        //   content="Сделать мое мероприятие закрытым"
-        //   defaultChecked={watch("type")}
-        //   onChange={(checked) => setValue("type", checked)}
-        // />
       )}
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
       <Button backgroundColor="#C0A2E2" onPress={handleSubmit(onSubmit)}>
         {isEditing ? "Сохранить изменения" : "Создать мероприятие"}
       </Button>
+      <Modal
+        isOpen={closedModalOpen}
+        image={require("@/assets/img/closed-event.png")}
+        title="Вы создали закрытое мероприятие!"
+        text="Ваша ссылка для приглашения:"
+        bannerColor="#C0A2E2"
+        onClose={() => {
+          setClosedModalOpen(false);
+          router.replace(`/events/${numericId}`);
+        }}
+      >
+        <View style={{ gap: 12 }}>
+          <Text selectable style={{ fontSize: 14, textAlign: "center" }}>
+            {generatedLink}
+          </Text>
+
+          <Button
+            backgroundColor="#C0A2E2"
+            onPress={() => {
+              Clipboard.setStringAsync(generatedLink);
+            }}
+          >
+            Скопировать ссылку
+          </Button>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };

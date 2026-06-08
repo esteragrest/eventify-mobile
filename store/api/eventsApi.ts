@@ -35,8 +35,15 @@ export const eventsApi = baseApi.injectEndpoints({
       providesTags: ["Events"],
     }),
 
-    getEventById: builder.query<EventByIdResponse, number>({
-      query: (id) => `/api/events/event/${id}`,
+    getEventById: builder.query<
+      EventByIdResponse,
+      { id: number; accessLink?: string }
+    >({
+      // query: (id) => `/api/events/event/${id}`,
+      query: ({ id, accessLink }) => {
+        const params = accessLink ? `?accessLink=${accessLink}` : "";
+        return `/api/events/event/${id}${params}`;
+      },
 
       transformResponse: (res: EventByIdResponse) => ({
         event: {
@@ -48,7 +55,7 @@ export const eventsApi = baseApi.injectEndpoints({
           commentatorPhoto: mapImageUrl(c.commentatorPhoto),
         })),
       }),
-      providesTags: (result, error, id) => [{ type: "Event", id }],
+      providesTags: (result, error, { id }) => [{ type: "Event", id }],
     }),
 
     createEvent: builder.mutation<any, any>({
