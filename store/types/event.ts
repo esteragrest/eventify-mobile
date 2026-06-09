@@ -1,3 +1,13 @@
+export interface GetEventsParams {
+  page: number;
+  limit: number;
+  title?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  payment?: string;
+  address?: string;
+}
+
 export interface EventItem {
   id: number;
   title: string;

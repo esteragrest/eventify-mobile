@@ -22,7 +22,6 @@ export interface SelectableMenuProps {
   selectedValue?: string | number;
 }
 
-//TODO: проверить работу
 export const SelectableMenu = ({
   title,
   options,
@@ -68,7 +67,6 @@ export const SelectableMenu = ({
 
   return (
     <View style={styles.container}>
-      {/* Кнопка */}
       <TouchableOpacity style={styles.selectButton} onPress={toggleMenu}>
         <Text style={styles.selectedText}>{selectedOption}</Text>
 
@@ -80,7 +78,6 @@ export const SelectableMenu = ({
         </Animated.View>
       </TouchableOpacity>
 
-      {/* Выпадающий список */}
       {isOpen && (
         <View style={styles.optionsContainer}>
           <ScrollView style={styles.options} nestedScrollEnabled>

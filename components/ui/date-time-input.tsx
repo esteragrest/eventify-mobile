@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
-    minWidth: 150,
+    minWidth: 130,
   },
   label: {
     fontSize: 14,

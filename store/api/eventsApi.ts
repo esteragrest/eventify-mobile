@@ -4,6 +4,7 @@ import {
   EventByIdResponse,
   EventItem,
   EventsResponse,
+  GetEventsParams,
 } from "../types";
 import { baseApi } from "./baseApi";
 
@@ -19,12 +20,21 @@ export const eventsApi = baseApi.injectEndpoints({
       providesTags: ["Events"],
     }),
 
-    getEvents: builder.query<
-      EventsResponse,
-      { page: number; limit: number; title?: string }
-    >({
-      query: ({ page, limit, title }) =>
-        `/api/events?limit=${limit}&page=${page}&title=${title ?? ""}`,
+    getEvents: builder.query<EventsResponse, GetEventsParams>({
+      query: ({ page, limit, title, dateFrom, dateTo, payment, address }) => {
+        const params = new URLSearchParams({
+          limit: String(limit),
+          page: String(page),
+          title: title ?? "",
+        });
+
+        if (dateFrom) params.append("dateFrom", dateFrom);
+        if (dateTo) params.append("dateTo", dateTo);
+        if (payment) params.append("payment", payment);
+        if (address) params.append("address", address);
+
+        return `/api/events?${params.toString()}`;
+      },
       transformResponse: (response: EventsResponse) => ({
         ...response,
         events: response.events.map((event) => ({
@@ -34,6 +44,18 @@ export const eventsApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Events"],
     }),
+    // getEvents: builder.query<EventsResponse, GetEventsParams>({
+    //   query: ({ page, limit, title }) =>
+    //     `/api/events?limit=${limit}&page=${page}&title=${title ?? ""}`,
+    //   transformResponse: (response: EventsResponse) => ({
+    //     ...response,
+    //     events: response.events.map((event) => ({
+    //       ...event,
+    //       photo: mapImageUrl(event.photo),
+    //     })),
+    //   }),
+    //   providesTags: ["Events"],
+    // }),
 
     getEventById: builder.query<
       EventByIdResponse,
