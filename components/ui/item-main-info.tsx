@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
 import { Link } from "expo-router";
+import { ReactNode } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export interface ItemMainInfoProps {
   itemName: string;
@@ -21,7 +21,7 @@ export const ItemMainInfo = ({
       <View style={styles.container}>
         <Image
           source={
-            photo ? { uri: photo } : require("../../public/img/no-photo-1.jpg")
+            photo ? { uri: photo } : require("@/assets/img/no-photo-1.jpg")
           }
           style={styles.avatar}
         />
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "flex-start",
     gap: 5,
-    width: "100%",
+    width: "auto",
   },
   avatar: {
     width: 35,

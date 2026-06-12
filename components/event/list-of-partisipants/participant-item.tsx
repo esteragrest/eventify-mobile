@@ -1,6 +1,6 @@
 import { ItemMainInfo, ListItemContainer } from "@/components";
+import { Text } from "@react-navigation/elements";
 import { StyleSheet, View } from "react-native";
-import { OptionItem } from "../../ui";
 
 export interface ParticipantItemProps {
   registration: {
@@ -25,6 +25,7 @@ export const ParticipantItem = ({ registration }: ParticipantItemProps) => {
     participantsCount,
   } = registration;
 
+  console.log(email);
   return (
     <View style={styles.container}>
       <ListItemContainer>
@@ -33,17 +34,16 @@ export const ParticipantItem = ({ registration }: ParticipantItemProps) => {
           photo={photo}
           to={`/profile/${registeredUserId}`}
         >
-          <View>
-            {/* <OptionItem optionName="Email:" description={email} /> */}
-            {email}
-          </View>
+          <Text style={styles.option}>{email}</Text>
+          <Text style={styles.option}>{phone}</Text>
+          {/* <OptionItem optionName="Телефон:" description={phone} /> */}
         </ItemMainInfo>
 
-        <OptionItem optionName="Телефон:" description={phone} />
-        <OptionItem
+        <Text style={styles.option}>{participantsCount}</Text>
+        {/* <OptionItem
           optionName="Количество участников:"
           description={participantsCount}
-        />
+        /> */}
       </ListItemContainer>
     </View>
   );
@@ -52,5 +52,10 @@ export const ParticipantItem = ({ registration }: ParticipantItemProps) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+  },
+  option: {
+    fontSize: 12,
+    opacity: 0.7,
+    color: "#000",
   },
 });
