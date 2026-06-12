@@ -44,24 +44,11 @@ export const eventsApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Events"],
     }),
-    // getEvents: builder.query<EventsResponse, GetEventsParams>({
-    //   query: ({ page, limit, title }) =>
-    //     `/api/events?limit=${limit}&page=${page}&title=${title ?? ""}`,
-    //   transformResponse: (response: EventsResponse) => ({
-    //     ...response,
-    //     events: response.events.map((event) => ({
-    //       ...event,
-    //       photo: mapImageUrl(event.photo),
-    //     })),
-    //   }),
-    //   providesTags: ["Events"],
-    // }),
 
     getEventById: builder.query<
       EventByIdResponse,
       { id: number; accessLink?: string }
     >({
-      // query: (id) => `/api/events/event/${id}`,
       query: ({ id, accessLink }) => {
         const params = accessLink ? `?accessLink=${accessLink}` : "";
         return `/api/events/event/${id}${params}`;
@@ -86,7 +73,7 @@ export const eventsApi = baseApi.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Events"],
+      invalidatesTags: ["Events", { type: "User", id: "ME" }],
     }),
 
     updateEvent: builder.mutation<any, { id: number; body: any }>({
@@ -98,6 +85,7 @@ export const eventsApi = baseApi.injectEndpoints({
       invalidatesTags: (result, error, { id }) => [
         "Events",
         { type: "Event", id },
+        { type: "User", id: "ME" },
       ],
     }),
 
@@ -106,7 +94,7 @@ export const eventsApi = baseApi.injectEndpoints({
         url: `/api/events/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Events"],
+      invalidatesTags: ["Events", { type: "User", id: "ME" }],
     }),
   }),
 });

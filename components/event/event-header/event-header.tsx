@@ -99,14 +99,15 @@ export const EventHeader = ({ event, accessRights }: EventHeaderProps) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
 
   title: {
     fontSize: 24,
     fontWeight: "700",
+    wordWrap: 'brake-all'
   },
 
   organizerName: {
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
   rating: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: 'center',
+    justifyContent: "center",
     gap: 4,
   },
 

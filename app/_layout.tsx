@@ -17,7 +17,12 @@ export default function RootLayout() {
       <View style={{ flex: 1, backgroundColor: "#FCF7FF" }}>
         {!isAuth && <Header onMenuPress={() => setMenuOpen(true)} />}
 
-        <Stack screenOptions={{ headerShown: false }} />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: "#FCF7FF" },
+          }}
+        />
 
         {!isAuth && menuOpen && <SideMenu onClose={() => setMenuOpen(false)} />}
       </View>

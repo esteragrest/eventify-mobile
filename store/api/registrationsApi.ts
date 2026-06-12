@@ -1,4 +1,3 @@
-import { mapImageUrl } from "@/utils";
 import { Registration } from "../types";
 import { baseApi } from "./baseApi";
 
@@ -40,14 +39,10 @@ export const registrationsApi = baseApi.injectEndpoints({
           participants_count: participants,
         },
       }),
-      transformResponse: (participants: Registration[]) =>
-        participants.map((participant: Registration) => ({
-          ...participant,
-          photo: mapImageUrl(participant?.photo || ""),
-        })),
       invalidatesTags: (result, error, { eventId }) => [
         "Events",
         { type: "Event", eventId },
+        "UserRegistrations",
       ],
     }),
   }),

@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     gap: 14,
-    paddingBottom: 20,
+    paddingBottom: 40,
   },
   error: {
     color: "red",
