@@ -8,7 +8,10 @@ import {
   useDeleteCommentMutation,
 } from "@/store/api/commentsApi";
 import { useGetEventByIdQuery } from "@/store/api/eventsApi";
-import { useGetParticipantsQuery } from "@/store/api/registrationsApi";
+import {
+  useGetParticipantsQuery,
+  useGetUserRegistrationForEventQuery,
+} from "@/store/api/registrationsApi";
 
 import {
   CommentsForm,
@@ -21,10 +24,7 @@ import {
 } from "@/components/event";
 
 import { DeleteButtons, Loader, Modal, PrivateContent } from "@/components";
-import {
-  useGetUserRatingQuery,
-  useGetUserRegistrationsQuery,
-} from "@/store/api";
+import { useGetUserRatingQuery } from "@/store/api";
 import { checkAccessRights, checkOwner, isAuthorized } from "@/utils";
 import { hasEventPassed } from "./utils";
 
@@ -54,12 +54,12 @@ export default function EventScreen() {
   const { data: participants, isLoading: isLoadingParticipants } =
     useGetParticipantsQuery(eventId);
 
-  const { data: userRegistrations } = useGetUserRegistrationsQuery(userId!, {
-    skip: !userId,
-  });
+  const { data: registrationData } = useGetUserRegistrationForEventQuery(
+    { eventId },
+    { skip: !userId },
+  );
 
-  const isRegistered =
-    userRegistrations?.some((r) => r.id === eventId) ?? false;
+  const isRegistered = registrationData?.isRegistered;
 
   const { data: userRating } = useGetUserRatingQuery(eventId, {
     skip: !userId,
@@ -161,7 +161,7 @@ export default function EventScreen() {
                   userRole={userRoleId ?? ""}
                 />
 
-                {isAuth && !isOwner && !isPastEvent && (
+                {isAuth && !isOwner && !isPastEvent && !isRegistered && (
                   <EventRegistrationForm eventId={eventId} />
                 )}
 

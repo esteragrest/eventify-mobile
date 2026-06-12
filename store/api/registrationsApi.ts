@@ -6,6 +6,7 @@ export const registrationsApi = baseApi.injectEndpoints({
     getParticipants: builder.query<Registration[], number>({
       query: (eventId) => `/api/registrations/event/${eventId}`,
     }),
+
     registerForEvent: builder.mutation<
       any,
       {
@@ -41,12 +42,27 @@ export const registrationsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: (result, error, { eventId }) => [
         "Events",
-        { type: "Event", eventId },
+        { type: "Event", id: eventId },
         "UserRegistrations",
       ],
+    }),
+
+    getUserRegistrationForEvent: builder.query<
+      { isRegistered: boolean },
+      { eventId: number }
+    >({
+      query: ({ eventId }) =>
+        `/api/registrations/registrationForEvent/${eventId}`,
+      transformResponse: (res: any) => ({
+        isRegistered: res?.isRegistered ?? false,
+      }),
+      providesTags: [{ type: "UserRegistrations", id: "ME" }],
     }),
   }),
 });
 
-export const { useGetParticipantsQuery, useRegisterForEventMutation } =
-  registrationsApi;
+export const {
+  useGetParticipantsQuery,
+  useRegisterForEventMutation,
+  useGetUserRegistrationForEventQuery,
+} = registrationsApi;
