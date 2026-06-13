@@ -9,7 +9,6 @@ export interface TextareaProps {
   onChangeText?: (text: string) => void;
 }
 
-//TODO: заменить форвардреф
 export const Textarea = forwardRef<TextInput, TextareaProps>(
   ({ name, id, placeholder, value, onChangeText, ...props }, ref) => {
     return (
@@ -38,6 +37,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     textAlignVertical: "top",
     fontSize: 14,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    paddingRight: 32
   },
 });

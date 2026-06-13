@@ -16,7 +16,7 @@ export const ItemMainInfo = ({
   children,
 }: ItemMainInfoProps) => {
   return (
-    <Link href={to} asChild>
+    <Link href={to}>
       <View style={styles.container}>
         <Image
           source={

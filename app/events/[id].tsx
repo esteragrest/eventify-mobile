@@ -1,6 +1,14 @@
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+  Keyboard,
+  KeyboardEvent,
+} from "react-native";
 import { useSelector } from "react-redux";
 
 import {
@@ -78,6 +86,26 @@ export default function EventScreen() {
   const [parentId, setParentId] = useState<number | null>(null);
   const [commentatorName, setCommentatorName] = useState("");
 
+  const [keyboardHeight, setKeyboardHeight] = useState(36);
+
+  useEffect(() => {
+    const showSub = Keyboard.addListener(
+      "keyboardDidShow",
+      (e: KeyboardEvent) => {
+        setKeyboardHeight(60);
+      },
+    );
+
+    const hideSub = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
+
   useEffect(() => {
     if (initialComments) setLocalComments(initialComments);
   }, [initialComments]);
@@ -129,75 +157,87 @@ export default function EventScreen() {
 
   return (
     <PrivateContent error={(error as any)?.data?.error}>
-      <ScrollView contentContainerStyle={styles.container}>
-        {isLoading || !event ? (
-          <Loader />
-        ) : (
-          <>
-            <EventHeader event={event} accessRights={accessRights} />
-
-            <View style={styles.overview}>
-              <EventContent event={event} />
-
-              <View style={styles.interactive}>
-                {isAuth && (
-                  <CommentsForm
-                    parentId={parentId}
-                    commentatorName={commentatorName}
-                    onAddComment={handleAddComment}
-                  />
-                )}
-
-                <EventComments
-                  comments={localComments}
-                  onReply={handleReply}
-                  onDelete={(id) => setDeleteModal({ open: true, id })}
-                  userId={userId ?? 0}
-                  isOwner={isOwner}
-                  userRole={userRoleId ?? ""}
-                />
-
-                {isAuth && !isOwner && !isPastEvent && !isRegistered && (
-                  <EventRegistrationForm
-                    eventId={eventId}
-                    onSuccess={() => setSuccessOpen(true)}
-                    onError={() => setErrorOpen(true)}
-                  />
-                )}
-
-                {canRate && <Rating eventId={eventId} userId={userId} />}
-              </View>
-            </View>
-
-            {accessRights && (
-              <ListOfParticipants
-                participants={participants ?? []}
-                isLoading={isLoadingParticipants}
-              />
-            )}
-          </>
-        )}
-      </ScrollView>
-
-      <SuccessModal
-        isOpen={successOpen}
-        onClose={() => setSuccessOpen(false)}
-      />
-      <ErrorModal isOpen={errorOpen} onClose={() => setErrorOpen(false)} />
-
-      <Modal
-        isOpen={deleteModal.open}
-        image={require("@/assets/img/delete.png")}
-        title="Удалить комментарий?"
-        text="После удаления комментарий исчезнет из списка."
-        bannerColor="#C0A2E2"
-        onClose={() => setDeleteModal({ open: false, id: null })}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={80}
       >
-        <DeleteButtons
-          onDelete={handleDeleteComment}
-          onChancel={() => setDeleteModal({ open: false, id: null })}
+        <ScrollView
+          contentContainerStyle={[
+            styles.container,
+            { paddingBottom: keyboardHeight },
+          ]}
+          keyboardShouldPersistTaps="handled"
+        >
+          {isLoading || !event ? (
+            <Loader />
+          ) : (
+            <>
+              <EventHeader event={event} accessRights={accessRights} />
+
+              <View style={styles.overview}>
+                <EventContent event={event} />
+
+                <View style={styles.interactive}>
+                  {isAuth && (
+                    <CommentsForm
+                      parentId={parentId}
+                      commentatorName={commentatorName}
+                      onAddComment={handleAddComment}
+                    />
+                  )}
+
+                  <EventComments
+                    comments={localComments}
+                    onReply={handleReply}
+                    onDelete={(id) => setDeleteModal({ open: true, id })}
+                    userId={userId ?? 0}
+                    isOwner={isOwner}
+                    userRole={userRoleId ?? ""}
+                  />
+
+                  {isAuth && !isOwner && !isPastEvent && !isRegistered && (
+                    <EventRegistrationForm
+                      eventId={eventId}
+                      onSuccess={() => setSuccessOpen(true)}
+                      onError={() => setErrorOpen(true)}
+                    />
+                  )}
+
+                  {canRate && <Rating eventId={eventId} userId={userId} />}
+                </View>
+              </View>
+
+              {accessRights && (
+                <ListOfParticipants
+                  participants={participants ?? []}
+                  isLoading={isLoadingParticipants}
+                />
+              )}
+            </>
+          )}
+        </ScrollView>
+
+        <SuccessModal
+          isOpen={successOpen}
+          onClose={() => setSuccessOpen(false)}
         />
-      </Modal>
+        <ErrorModal isOpen={errorOpen} onClose={() => setErrorOpen(false)} />
+
+        <Modal
+          isOpen={deleteModal.open}
+          image={require("@/assets/img/delete.png")}
+          title="Удалить комментарий?"
+          text="После удаления комментарий исчезнет из списка."
+          bannerColor="#C0A2E2"
+          onClose={() => setDeleteModal({ open: false, id: null })}
+        >
+          <DeleteButtons
+            onDelete={handleDeleteComment}
+            onChancel={() => setDeleteModal({ open: false, id: null })}
+          />
+        </Modal>
+      </KeyboardAvoidingView>
     </PrivateContent>
   );
 }
@@ -215,3 +255,4 @@ const styles = StyleSheet.create({
     gap: 20,
   },
 });
+

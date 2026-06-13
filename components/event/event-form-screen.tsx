@@ -3,7 +3,14 @@ import * as Clipboard from "expo-clipboard";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 
 import {
   useCreateEventMutation,
@@ -148,119 +155,132 @@ export const EventFormScreen = () => {
     errors.max_participants?.message;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <FileInput
-        register={register}
-        setValue={(name, value) =>
-          setValue(name as keyof EventFormValues, value)
-        }
-        defaultImage={isEditing ? (data?.event.photo ?? undefined) : undefined}
-      />
-
-      <Input
-        name="title"
-        control={control}
-        placeholder="Название мероприятия"
-      />
-
-      <FormRow>
-        <DateTimeInput
-          type="date"
-          label="Дата проведения"
-          value={watch("event_date")}
-          onChange={(date) => {
-            const iso = date.toISOString().slice(0, 10);
-            setValue("event_date", iso);
-          }}
-        />
-
-        <DateTimeInput
-          type="time"
-          label="Время проведения"
-          value={watch("event_time")}
-          onChange={(date) => {
-            const time = date.toTimeString().slice(0, 5);
-            setValue("event_time", time);
-          }}
-        />
-      </FormRow>
-
-      <Input
-        name="address"
-        control={control}
-        placeholder="Полный адрес мероприятия"
-      />
-
-      <Textarea
-        name="description"
-        id="description"
-        placeholder="Опишите Ваше мероприятие"
-        value={descriptionValue}
-        onChangeText={(text) => setValue("description", text)}
-      />
-
-      <FormRow>
-        <SelectableMenu
-          title="Тип оплаты"
-          options={PAYMENT_TYPE}
-          selectedValue={watch("payment")}
-          setValue={(value) => setValue("payment", value as string)}
-        />
-
-        <SelectableMenu
-          title="Возраст"
-          options={AGE_LIMIT_TYPE}
-          selectedValue={watch("age_limit")}
-          setValue={(value) => setValue("age_limit", value as string)}
-        />
-      </FormRow>
-
-      <Input
-        name="max_participants"
-        control={control}
-        placeholder="Максимальное количество участников"
-        keyboardType="numeric"
-      />
-
-      {!isEditing && (
-        <CustomCheckbox
-          content="Сделать мое мероприятие закрытым"
-          defaultChecked={watch("type")}
-          onChange={(checked) => setValue("type", checked)}
-        />
-      )}
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-
-      <Button backgroundColor="#C0A2E2" onPress={handleSubmit(onSubmit)}>
-        {isEditing ? "Сохранить изменения" : "Создать мероприятие"}
-      </Button>
-      <Modal
-        isOpen={closedModalOpen}
-        image={require("@/assets/img/closed-event.png")}
-        title="Вы создали закрытое мероприятие!"
-        text="Ваша ссылка для приглашения:"
-        bannerColor="#C0A2E2"
-        onClose={() => {
-          setClosedModalOpen(false);
-          router.replace(`/events/${numericId}`);
-        }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={60}
+    >
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
       >
-        <View style={{ gap: 12 }}>
-          <Text selectable style={{ fontSize: 14, textAlign: "center" }}>
-            {generatedLink}
-          </Text>
+        <FileInput
+          register={register}
+          setValue={(name, value) =>
+            setValue(name as keyof EventFormValues, value)
+          }
+          defaultImage={
+            isEditing ? (data?.event.photo ?? undefined) : undefined
+          }
+        />
 
-          <Button
-            backgroundColor="#C0A2E2"
-            onPress={() => {
-              Clipboard.setStringAsync(generatedLink);
+        <Input
+          name="title"
+          control={control}
+          placeholder="Название мероприятия"
+        />
+
+        <FormRow>
+          <DateTimeInput
+            type="date"
+            label="Дата проведения"
+            value={watch("event_date")}
+            onChange={(date) => {
+              const iso = date.toISOString().slice(0, 10);
+              setValue("event_date", iso);
             }}
-          >
-            Скопировать ссылку
-          </Button>
-        </View>
-      </Modal>
-    </ScrollView>
+          />
+
+          <DateTimeInput
+            type="time"
+            label="Время проведения"
+            value={watch("event_time")}
+            onChange={(date) => {
+              const time = date.toTimeString().slice(0, 5);
+              setValue("event_time", time);
+            }}
+          />
+        </FormRow>
+
+        <Input
+          name="address"
+          control={control}
+          placeholder="Полный адрес мероприятия"
+        />
+
+        <Textarea
+          name="description"
+          id="description"
+          placeholder="Опишите Ваше мероприятие"
+          value={descriptionValue}
+          onChangeText={(text) => setValue("description", text)}
+        />
+
+        <FormRow>
+          <SelectableMenu
+            title="Тип оплаты"
+            options={PAYMENT_TYPE}
+            selectedValue={watch("payment")}
+            setValue={(value) => setValue("payment", value as string)}
+          />
+
+          <SelectableMenu
+            title="Возраст"
+            options={AGE_LIMIT_TYPE}
+            selectedValue={watch("age_limit")}
+            setValue={(value) => setValue("age_limit", value as string)}
+          />
+        </FormRow>
+
+        <Input
+          name="max_participants"
+          control={control}
+          placeholder="Максимальное количество участников"
+          keyboardType="numeric"
+        />
+
+        {!isEditing && (
+          <CustomCheckbox
+            content="Сделать мое мероприятие закрытым"
+            defaultChecked={watch("type")}
+            onChange={(checked) => setValue("type", checked)}
+          />
+        )}
+
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+
+        <Button backgroundColor="#C0A2E2" onPress={handleSubmit(onSubmit)}>
+          {isEditing ? "Сохранить изменения" : "Создать мероприятие"}
+        </Button>
+
+        <Modal
+          isOpen={closedModalOpen}
+          image={require("@/assets/img/closed-event.png")}
+          title="Вы создали закрытое мероприятие!"
+          text="Ваша ссылка для приглашения:"
+          bannerColor="#C0A2E2"
+          onClose={() => {
+            setClosedModalOpen(false);
+            router.replace(`/events/${numericId}`);
+          }}
+        >
+          <View style={{ gap: 12 }}>
+            <Text selectable style={{ fontSize: 14, textAlign: "center" }}>
+              {generatedLink}
+            </Text>
+
+            <Button
+              backgroundColor="#C0A2E2"
+              onPress={() => {
+                Clipboard.setStringAsync(generatedLink);
+              }}
+            >
+              Скопировать ссылку
+            </Button>
+          </View>
+        </Modal>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
