@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
 import {
@@ -8,9 +8,10 @@ import {
   useGetUserRegistrationsQuery,
 } from "@/store/api/usersApi";
 
-import { ItemMainInfo, ListItemContainer, Loader } from "./ui";
+import { ControlButton, ItemMainInfo, ListItemContainer, Loader } from "./ui";
 import { UserEvents, UserProfileHeader } from "./user-profile";
 
+import { useDeleteRegistrationMutation } from "@/store/api";
 import { EventItem } from "@/store/types";
 import { checkAccessRights, isAuthorized } from "@/utils";
 
@@ -36,6 +37,16 @@ export function UserProfileScreen() {
   });
 
   const [theseActiveEvents, setTheseActiveEvents] = useState(true);
+
+  const [deleteRegistration] = useDeleteRegistrationMutation();
+
+  const handleDeleteRegistration = async (eventId: number) => {
+    try {
+      await deleteRegistration({ eventId }).unwrap();
+    } catch (err) {
+      console.log("Ошибка удаления регистрации:", err);
+    }
+  };
 
   if (!isAuth && !isOtherUser) {
     router.replace("/auth/login");
@@ -93,6 +104,12 @@ export function UserProfileScreen() {
               >
                 {event.eventDate}
               </ItemMainInfo>
+              <ControlButton onPress={() => handleDeleteRegistration(event.id)}>
+                <Image
+                  source={require("@/assets/img/control-delete.png")}
+                  // style={styles.deleteIcon}
+                />
+              </ControlButton>
             </ListItemContainer>
           ))}
         </View>
@@ -130,5 +147,10 @@ const styles = StyleSheet.create({
   eventRegistrationDate: {
     fontSize: 12,
     color: "#000",
+  },
+  deleteIcon: {
+    width: 22,
+    height: 22,
+    tintColor: "#C0392B",
   },
 });

@@ -41,11 +41,7 @@ export const registrationsApi = baseApi.injectEndpoints({
           participants_count: participants,
         },
       }),
-      invalidatesTags: (result, error, { eventId }) => [
-        "Events",
-        // { type: "Event", id: eventId },
-        "UserRegistrations",
-      ],
+      invalidatesTags: ["Events", "UserRegistrations"],
     }),
 
     getUserRegistrationForEvent: builder.query<
@@ -54,9 +50,6 @@ export const registrationsApi = baseApi.injectEndpoints({
     >({
       query: ({ eventId }) =>
         `/api/registrations/registrationForEvent/${eventId}`,
-      // transformResponse: (res: any) => ({
-      //   isRegistered: res?.isRegistered ?? false,
-      // }),
       providesTags: [{ type: "UserRegistrations", id: "ME" }],
     }),
 
@@ -68,11 +61,7 @@ export const registrationsApi = baseApi.injectEndpoints({
         url: `/api/registrations/registrationForEvent/${eventId}`,
         method: "DELETE",
       }),
-      invalidatesTags: [
-        { type: "UserRegistrations", id: "ME" },
-        { type: "Event" },
-        "Events",
-      ],
+      invalidatesTags: ["UserRegistrations", "EventRegistrations", "Events"],
     }),
   }),
 });
