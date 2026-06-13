@@ -72,7 +72,7 @@ export const SelectableMenu = ({
 
         <Animated.View style={{ transform: [{ rotate }] }}>
           <Image
-            source={require("../../assets/img/select.svg")}
+            source={require("@/assets/img/select.png")}
             style={styles.icon}
           />
         </Animated.View>

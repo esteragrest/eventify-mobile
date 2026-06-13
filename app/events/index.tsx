@@ -1,46 +1,3 @@
-// import { EventsList, Loader, Pagination } from "@/components";
-// import { useGetEventsQuery } from "@/store/api";
-// import { useState } from "react";
-// import { ScrollView, StyleSheet, View } from "react-native";
-
-// import { useSelector } from "react-redux";
-
-// const LIMIT = 6
-
-// export default function EventsScreen() {
-//   const [page, setPage] = useState(1);
-
-//   const searchPhrase = useSelector((state: any) => state.search.phrase);
-
-//   const { data, isLoading, isError } = useGetEventsQuery({
-//     page,
-//     limit: LIMIT,
-//     title: searchPhrase,
-//   });
-
-//   const events = data?.events ?? [];
-//   const lastPage = data?.lastPage ?? 1;
-
-//   return (
-//     <ScrollView
-//       showsVerticalScrollIndicator={false}
-//       contentContainerStyle={styles.container}
-//     >
-//       {isLoading && <Loader />}
-
-//       {!isLoading && !isError && (
-//         <View style={styles.listWrapper}>
-//           <EventsList events={events} />
-//         </View>
-//       )}
-
-//       {!isLoading && lastPage > 1 && events.length > 0 && (
-//         <Pagination page={page} lastPage={lastPage} setPage={setPage} />
-//       )}
-//     </ScrollView>
-//   );
-// }
-
 import { EventsFilters, EventsList, Loader, Pagination } from "@/components";
 import { useGetEventsQuery } from "@/store/api";
 import { useState } from "react";
@@ -78,10 +35,6 @@ export default function EventsScreen() {
   const events = data?.events ?? [];
   const lastPage = data?.lastPage ?? 1;
 
-  const applyFilters = () => {
-    setPage(1);
-  };
-
   const resetFilters = () => {
     setFilters({
       dateFrom: "",
@@ -100,7 +53,6 @@ export default function EventsScreen() {
       <EventsFilters
         filters={filters}
         setFilters={setFilters}
-        onApply={applyFilters}
         onReset={resetFilters}
       />
 

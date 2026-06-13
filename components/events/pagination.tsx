@@ -35,7 +35,7 @@ export const Pagination = ({ page, lastPage, setPage }: PaginationProps) => {
     <View style={styles.container}>
       <PaginationButton disabled={page === 1} onPress={() => setPage(page - 1)}>
         <Image
-          source={require("../../assets/img/arrow-back.svg")}
+          source={require("@/assets/img/arrow-back.png")}
           style={styles.icon}
         />
       </PaginationButton>
@@ -67,7 +67,7 @@ export const Pagination = ({ page, lastPage, setPage }: PaginationProps) => {
         onPress={() => setPage(page + 1)}
       >
         <Image
-          source={require("../../assets/img/arrow-next.svg")}
+          source={require("@/assets/img/arrow-next.png")}
           style={styles.icon}
         />
       </PaginationButton>

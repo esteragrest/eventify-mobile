@@ -1,45 +1,6 @@
 import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-// interface CustomCheckboxProps {
-//   content: string;
-// //   onChange?: (checked: boolean) => void;
-//   defaultChecked?: boolean;
-// }
-
-// export const CustomCheckbox = ({
-//   content,
-// //   onChange,
-//   defaultChecked = false,
-// }: CustomCheckboxProps) => {
-//   const [checked, setChecked] = useState(defaultChecked);
-
-//   const toggle = () => {
-//     const newValue = !checked;
-//     setChecked(newValue);
-//     // onChange?.(newValue);
-//   };
-
-//   return (
-//     <TouchableOpacity
-//       style={styles.container}
-//       onPress={toggle}
-//       activeOpacity={0.7}
-//     >
-//       <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-//         {checked && (
-//           <Image
-//             source={require("../../public/img/check-mark.svg")}
-//             style={styles.checkIcon}
-//           />
-//         )}
-//       </View>
-
-//       <Text style={styles.text}>{content}</Text>
-//     </TouchableOpacity>
-//   );
-// };
-
 interface CustomCheckboxProps {
   content: string;
   defaultChecked?: boolean;
@@ -64,7 +25,7 @@ export const CustomCheckbox = ({
       <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
         {checked && (
           <Image
-            source={require("../../assets/img/check-mark.svg")}
+            source={require("@/assets/img/check-mark.png")}
             style={styles.checkIcon}
           />
         )}
@@ -74,7 +35,6 @@ export const CustomCheckbox = ({
     </TouchableOpacity>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

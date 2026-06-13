@@ -11,7 +11,7 @@ interface ErrorPageProps {
 export const ErrorPage = ({ status, title, message }: ErrorPageProps) => {
   return (
     <View style={styles.container}>
-      <BackgroundBanner imgUrl={require("../public/img/error-page-left.svg")} />
+      <BackgroundBanner imgUrl={require("@/assets/img/error-page-left.svg")} />
 
       <View style={styles.error}>
         <Text style={styles.status}>{status}</Text>
@@ -25,9 +25,7 @@ export const ErrorPage = ({ status, title, message }: ErrorPageProps) => {
         </Button>
       </View>
 
-      <BackgroundBanner
-        imgUrl={require("../public/img/error-page-right.svg")}
-      />
+      <BackgroundBanner imgUrl={require("@/assets/img/error-page-right.svg")} />
     </View>
   );
 };

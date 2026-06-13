@@ -49,7 +49,7 @@ export const FileInput = ({
           source={
             preview
               ? { uri: preview }
-              : require("../../assets/img/add-photo.svg")
+              : require("@/assets/img/add-photo.png")
           }
           style={styles.image}
         />

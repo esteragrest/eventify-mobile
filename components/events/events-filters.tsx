@@ -9,14 +9,12 @@ import { SimpleInput } from "./simple-input";
 export interface EventsFiltersProps {
   filters: EventsFiltersState;
   setFilters: (value: EventsFiltersState) => void;
-  onApply: () => void;
   onReset: () => void;
 }
 
 export const EventsFilters = ({
   filters,
   setFilters,
-  onApply,
   onReset,
 }: EventsFiltersProps) => {
   const [open, setOpen] = useState(false);
@@ -27,16 +25,12 @@ export const EventsFilters = ({
         <Text style={styles.toggleText}>Фильтры</Text>
         <Image
           source={require("@/assets/img/filter1.png")}
-          style={[
-            styles.arrow,
-            { transform: [{ rotate: open ? "180deg" : "0deg" }] },
-          ]}
+          style={styles.arrow}
         />
       </TouchableOpacity>
 
       {open && (
         <View style={styles.container}>
-          {/* <View style={styles.row}> */}
           <FormRow>
             <DateTimeInput
               type="date"
@@ -62,7 +56,6 @@ export const EventsFilters = ({
               }}
             />
           </FormRow>
-          {/* </View> */}
 
           <SimpleInput
             value={filters.address}
@@ -83,13 +76,6 @@ export const EventsFilters = ({
           />
 
           <View style={styles.buttonsRow}>
-            <Button width={56} onPress={onApply}>
-              <Image
-                source={require("@/assets/img/filter.png")}
-                style={styles.icon}
-              />
-            </Button>
-
             <Button width={56} onPress={onReset}>
               <Image
                 source={require("@/assets/img/reset.png")}
@@ -134,7 +120,6 @@ const styles = StyleSheet.create({
   buttonsRow: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginTop: 5,
   },
   icon: {
     width: 18,
