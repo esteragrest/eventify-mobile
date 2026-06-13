@@ -108,6 +108,7 @@ export const EventFormScreen = () => {
   const onSubmit = async (form: EventFormValues) => {
     const payload = {
       ...form,
+      max_participants: Number(form.max_participants),
       type: form.type ? "closed" : "open",
     };
 

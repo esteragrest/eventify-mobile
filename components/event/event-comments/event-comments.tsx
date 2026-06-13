@@ -3,7 +3,6 @@ import { CommentItem } from "@/store/types";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { EventCommentItem } from "./event-comment-item";
-import { checkOwner } from "@/utils";
 
 interface EventCommentsProps {
   comments: CommentItem[];

@@ -35,14 +35,9 @@ export const ParticipantItem = ({ registration }: ParticipantItemProps) => {
         >
           <Text style={styles.option}>{email}</Text>
           <Text style={styles.option}>{phone}</Text>
-          {/* <OptionItem optionName="Телефон:" description={phone} /> */}
         </ItemMainInfo>
 
         <Text style={styles.option}>{participantsCount}</Text>
-        {/* <OptionItem
-          optionName="Количество участников:"
-          description={participantsCount}
-        /> */}
       </ListItemContainer>
     </View>
   );

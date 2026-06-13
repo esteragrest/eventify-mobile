@@ -7,7 +7,6 @@ interface ErrorModalProps {
 export const ErrorModal = ({ isOpen, onClose }: ErrorModalProps) => (
   <Modal
     isOpen={isOpen}
-    //TODO: чекнуть есть ли картинка
     image={require("@/assets/img/error.png")}
     bannerColor="#C0A2E2"
     title="Ошибка регистрации"
