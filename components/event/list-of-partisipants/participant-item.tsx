@@ -25,7 +25,6 @@ export const ParticipantItem = ({ registration }: ParticipantItemProps) => {
     participantsCount,
   } = registration;
 
-  console.log(email);
   return (
     <View style={styles.container}>
       <ListItemContainer>

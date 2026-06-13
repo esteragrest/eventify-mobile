@@ -5,6 +5,7 @@ export const registrationsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getParticipants: builder.query<Registration[], number>({
       query: (eventId) => `/api/registrations/event/${eventId}`,
+      providesTags: ["EventRegistrations"],
     }),
 
     registerForEvent: builder.mutation<
@@ -42,7 +43,7 @@ export const registrationsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: (result, error, { eventId }) => [
         "Events",
-        { type: "Event", id: eventId },
+        // { type: "Event", id: eventId },
         "UserRegistrations",
       ],
     }),
@@ -53,10 +54,25 @@ export const registrationsApi = baseApi.injectEndpoints({
     >({
       query: ({ eventId }) =>
         `/api/registrations/registrationForEvent/${eventId}`,
-      transformResponse: (res: any) => ({
-        isRegistered: res?.isRegistered ?? false,
-      }),
+      // transformResponse: (res: any) => ({
+      //   isRegistered: res?.isRegistered ?? false,
+      // }),
       providesTags: [{ type: "UserRegistrations", id: "ME" }],
+    }),
+
+    deleteRegistration: builder.mutation<
+      { success: boolean },
+      { eventId: number }
+    >({
+      query: ({ eventId }) => ({
+        url: `/api/registrations/registrationForEvent/${eventId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [
+        { type: "UserRegistrations", id: "ME" },
+        { type: "Event" },
+        "Events",
+      ],
     }),
   }),
 });
@@ -65,4 +81,5 @@ export const {
   useGetParticipantsQuery,
   useRegisterForEventMutation,
   useGetUserRegistrationForEventQuery,
+  useDeleteRegistrationMutation,
 } = registrationsApi;

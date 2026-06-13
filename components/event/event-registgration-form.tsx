@@ -4,6 +4,10 @@
 // import { useState } from "react";
 // import { useForm } from "react-hook-form";
 // import { StyleSheet, Text, View } from "react-native";
+// import { useSelector } from "react-redux";
+
+// import { useRegisterForEventMutation } from "@/store/api/registrationsApi";
+// import { ErrorModal, SuccessModal } from "./modals";
 
 // interface EventRegistrationFormProps {
 //   eventId: number;
@@ -12,7 +16,14 @@
 // export const EventRegistrationForm = ({
 //   eventId,
 // }: EventRegistrationFormProps) => {
+//   const user = useSelector((state: any) => state.user.user);
+//   const userId = user?.id;
+
 //   const [serverError, setServerError] = useState("");
+//   const [successOpen, setSuccessOpen] = useState(false);
+//   const [errorOpen, setErrorOpen] = useState(false);
+
+//   const [registerForEvent] = useRegisterForEventMutation();
 
 //   const {
 //     control,
@@ -30,29 +41,36 @@
 //     resolver: yupResolver(eventRegistrationValidationSchema),
 //   });
 
-//   const fakeSubmit = (data: any) => {
-//     console.log("FAKE REGISTRATION:", { eventId, ...data });
-//     reset();
-//   };
+//   const onSubmit = async (form: any) => {
+//     try {
+//       const res = await registerForEvent({
+//         eventId,
+//         userId,
+//         firstName: form.firstName,
+//         lastName: form.lastName || null,
+//         email: form.email,
+//         phone: form.phone,
+//         participants: Number(form.participants),
+//       }).unwrap();
 
-//   const onSubmit = (form: any) => {
-//     const newRegistration = {
-//       first_name: form.firstName,
-//       last_name: form.lastName || null,
-//       email: form.email,
-//       phone: form.phone,
-//       participants_count: Number(form.participants),
-//     };
+//       if (res.error) {
+//         setErrorOpen(true);
+//         return;
+//       }
 
-//     fakeSubmit(newRegistration);
+//       setSuccessOpen(true);
+//       reset();
+//     } catch (err) {
+//       setErrorOpen(true);
+//     }
 //   };
 
 //   const formError =
-//     (errors as any)?.firstName?.message ||
-//     (errors as any)?.lastName?.message ||
-//     (errors as any)?.email?.message ||
-//     (errors as any)?.phone?.message ||
-//     (errors as any)?.participants?.message;
+//     errors?.firstName?.message ||
+//     errors?.lastName?.message ||
+//     errors?.email?.message ||
+//     errors?.phone?.message ||
+//     errors?.participants?.message;
 
 //   const errorMessage = formError || serverError;
 
@@ -78,7 +96,6 @@
 //         </FormRow>
 
 //         <Input name="email" control={control} placeholder="Ваш email" />
-
 //         <Input name="phone" control={control} placeholder="Ваш телефон" />
 
 //         <Input
@@ -94,6 +111,12 @@
 //           Принять участие
 //         </Button>
 //       </View>
+
+//       <SuccessModal
+//         isOpen={successOpen}
+//         onClose={() => setSuccessOpen(false)}
+//       />
+//       <ErrorModal isOpen={errorOpen} onClose={() => setErrorOpen(false)} />
 //     </View>
 //   );
 // };
@@ -103,7 +126,7 @@
 //     width: "100%",
 //     marginTop: 20,
 //     flexDirection: "column",
-//     gap: 8,
+//     gap: 15,
 //   },
 
 //   title: {
@@ -114,34 +137,30 @@
 //   form: {
 //     width: "100%",
 //     flexDirection: "column",
-//     gap: 12,
 //   },
 // });
 
 import { Button, ErrorMessage, FormRow, Input } from "@/components";
 import { eventRegistrationValidationSchema } from "@/validations";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-
 import { useRegisterForEventMutation } from "@/store/api/registrationsApi";
-import { ErrorModal, SuccessModal } from "./modals";
 
 interface EventRegistrationFormProps {
   eventId: number;
+  onSuccess: () => void;
+  onError: () => void;
 }
 
 export const EventRegistrationForm = ({
   eventId,
+  onSuccess,
+  onError,
 }: EventRegistrationFormProps) => {
   const user = useSelector((state: any) => state.user.user);
   const userId = user?.id;
-
-  const [serverError, setServerError] = useState("");
-  const [successOpen, setSuccessOpen] = useState(false);
-  const [errorOpen, setErrorOpen] = useState(false);
 
   const [registerForEvent] = useRegisterForEventMutation();
 
@@ -163,7 +182,7 @@ export const EventRegistrationForm = ({
 
   const onSubmit = async (form: any) => {
     try {
-      const res = await registerForEvent({
+      await registerForEvent({
         eventId,
         userId,
         firstName: form.firstName,
@@ -173,15 +192,10 @@ export const EventRegistrationForm = ({
         participants: Number(form.participants),
       }).unwrap();
 
-      if (res.error) {
-        setErrorOpen(true);
-        return;
-      }
-
-      setSuccessOpen(true);
+      onSuccess();
       reset();
-    } catch (err) {
-      setErrorOpen(true);
+    } catch {
+      onError();
     }
   };
 
@@ -191,8 +205,6 @@ export const EventRegistrationForm = ({
     errors?.email?.message ||
     errors?.phone?.message ||
     errors?.participants?.message;
-
-  const errorMessage = formError || serverError;
 
   return (
     <View style={styles.container}>
@@ -225,18 +237,12 @@ export const EventRegistrationForm = ({
           keyboardType="numeric"
         />
 
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+        {formError && <ErrorMessage>{formError}</ErrorMessage>}
 
         <Button backgroundColor="#E8FF59" onPress={handleSubmit(onSubmit)}>
           Принять участие
         </Button>
       </View>
-
-      <SuccessModal
-        isOpen={successOpen}
-        onClose={() => setSuccessOpen(false)}
-      />
-      <ErrorModal isOpen={errorOpen} onClose={() => setErrorOpen(false)} />
     </View>
   );
 };
@@ -248,14 +254,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 15,
   },
-
   title: {
     fontSize: 18,
     fontWeight: "600",
   },
-
   form: {
     width: "100%",
     flexDirection: "column",
   },
 });
+

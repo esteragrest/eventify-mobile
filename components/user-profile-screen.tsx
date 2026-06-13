@@ -126,4 +126,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "red",
   },
+
+  eventRegistrationDate: {
+    fontSize: 12,
+    color: "#000",
+  },
 });

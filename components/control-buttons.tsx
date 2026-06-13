@@ -12,14 +12,14 @@ export const ControlButtons = ({ onEdit, onDelete }: ControlButtonsProps) => {
       {/* //TODO: заменить на качественные картинки */}
       <ControlButton onPress={onEdit}>
         <Image
-          source={require("../public/img/control-edit.png")}
+          source={require("@/assets/img/control-edit.png")}
           style={styles.editIcon}
         />
       </ControlButton>
 
       <ControlButton onPress={onDelete}>
         <Image
-          source={require("../public/img/control-delete.png")}
+          source={require("@/assets/img/control-delete.png")}
           style={styles.deleteIcon}
         />
       </ControlButton>

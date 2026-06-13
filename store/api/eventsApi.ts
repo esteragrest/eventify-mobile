@@ -67,21 +67,97 @@ export const eventsApi = baseApi.injectEndpoints({
       providesTags: (result, error, { id }) => [{ type: "Event", id }],
     }),
 
+    // createEvent: builder.mutation<any, any>({
+    //   query: (body) => ({
+    //     url: "/api/events",
+    //     method: "POST",
+    //     body,
+    //   }),
+    //   invalidatesTags: ["Events", { type: "User", id: "ME" }],
+    // }),
+
+    // updateEvent: builder.mutation<any, { id: number; body: any }>({
+    //   query: ({ id, body }) => ({
+    //     url: `/api/events/${id}`,
+    //     method: "PUT",
+    //     body,
+    //   }),
+    //   invalidatesTags: (result, error, { id }) => [
+    //     "Events",
+    //     { type: "Event", id },
+    //     { type: "User", id: "ME" },
+    //   ],
+    // }),
+
     createEvent: builder.mutation<any, any>({
-      query: (body) => ({
-        url: "/api/events",
-        method: "POST",
-        body,
-      }),
+      query: (body) => {
+        const isNewPhoto = body.photo && body.photo.startsWith("file://");
+
+        if (isNewPhoto) {
+          const formData = new FormData();
+
+          Object.entries(body).forEach(([key, value]) => {
+            if (key === "photo") {
+              formData.append("photo", {
+                uri: value,
+                name: "event.jpg",
+                type: "image/jpeg",
+              } as any);
+            } else {
+              formData.append(key, value as any);
+            }
+          });
+
+          return {
+            url: "/api/events",
+            method: "POST",
+            body: formData,
+          };
+        }
+
+        return {
+          url: "/api/events",
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+        };
+      },
       invalidatesTags: ["Events", { type: "User", id: "ME" }],
     }),
 
     updateEvent: builder.mutation<any, { id: number; body: any }>({
-      query: ({ id, body }) => ({
-        url: `/api/events/${id}`,
-        method: "PUT",
-        body,
-      }),
+      query: ({ id, body }) => {
+        const isNewPhoto = body.photo && body.photo.startsWith("file://");
+
+        if (isNewPhoto) {
+          const formData = new FormData();
+
+          Object.entries(body).forEach(([key, value]) => {
+            if (key === "photo") {
+              formData.append("photo", {
+                uri: value,
+                name: "event.jpg",
+                type: "image/jpeg",
+              } as any);
+            } else {
+              formData.append(key, value as any);
+            }
+          });
+
+          return {
+            url: `/api/events/${id}`,
+            method: "PUT",
+            body: formData,
+          };
+        }
+
+        return {
+          url: `/api/events/${id}`,
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body,
+        };
+      },
       invalidatesTags: (result, error, { id }) => [
         "Events",
         { type: "Event", id },

@@ -58,7 +58,6 @@ export const UserProfileHeader = ({
 
   return (
     <View style={styles.container}>
-      {/* Аватар + кнопки под ним */}
       <View style={styles.leftColumn}>
         <Image
           source={
@@ -66,7 +65,6 @@ export const UserProfileHeader = ({
           }
           style={styles.avatar}
         />
-
         {accessRights && (
           <View style={styles.controls}>
             <ControlButtons
@@ -80,13 +78,10 @@ export const UserProfileHeader = ({
           </View>
         )}
       </View>
-
-      {/* Информация о пользователе */}
       <View style={styles.infoBlock}>
         <Text style={styles.name}>
           {firstName} {lastName || ""}
         </Text>
-
         <Text style={styles.text}>{email}</Text>
         {phone && <Text style={styles.text}>{phone}</Text>}
         {birthDate && <Text style={styles.text}>{birthDate}</Text>}
@@ -103,7 +98,6 @@ export const UserProfileHeader = ({
         </View>
       </View>
 
-      {/* Модалка удаления */}
       <Modal
         isOpen={modalOpen}
         image={require("@/assets/img/delete.png")}
