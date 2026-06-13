@@ -1,11 +1,11 @@
-import { Link } from "expo-router";
+import { Href, Link } from "expo-router";
 import { ReactNode } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 export interface ItemMainInfoProps {
   itemName: string;
   photo?: string;
-  to: string;
+  to: Href;
   children?: ReactNode;
 }
 
@@ -16,8 +16,7 @@ export const ItemMainInfo = ({
   children,
 }: ItemMainInfoProps) => {
   return (
-    //TODO: чекнуть ошибки типов
-    <Link href={to}>
+    <Link href={to} asChild>
       <View style={styles.container}>
         <Image
           source={

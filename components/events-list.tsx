@@ -29,6 +29,9 @@ export const EventsList = ({ events }: EventsListProps) => {
       data={events}
       key={numColumns}
       numColumns={numColumns}
+      scrollEnabled={false}
+      nestedScrollEnabled={true}
+      removeClippedSubviews={false}
       contentContainerStyle={styles.container}
       columnWrapperStyle={numColumns > 1 ? styles.row : undefined}
       renderItem={({ item }) => (

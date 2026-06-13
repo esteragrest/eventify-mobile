@@ -94,7 +94,6 @@ export function UserProfileScreen() {
         <View style={styles.registrationsContainer}>
           <Text style={styles.sectionTitle}>Регистрации:</Text>
 
-          {/* //TODO: Добавить удаление регистраций */}
           {registrations.map((event: EventItem) => (
             <ListItemContainer key={event.id}>
               <ItemMainInfo
@@ -102,13 +101,12 @@ export function UserProfileScreen() {
                 photo={event.photo}
                 to={`/events/${event.id}`}
               >
-                {event.eventDate}
+                <Text style={styles.eventRegistrationDate}>
+                  {event.eventDate}
+                </Text>
               </ItemMainInfo>
               <ControlButton onPress={() => handleDeleteRegistration(event.id)}>
-                <Image
-                  source={require("@/assets/img/control-delete.png")}
-                  // style={styles.deleteIcon}
-                />
+                <Image source={require("@/assets/img/control-delete.png")} />
               </ControlButton>
             </ListItemContainer>
           ))}
@@ -147,10 +145,5 @@ const styles = StyleSheet.create({
   eventRegistrationDate: {
     fontSize: 12,
     color: "#000",
-  },
-  deleteIcon: {
-    width: 22,
-    height: 22,
-    tintColor: "#C0392B",
   },
 });

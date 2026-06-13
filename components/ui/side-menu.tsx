@@ -68,7 +68,10 @@ export const SideMenu = ({ onClose }: SideMenuProps) => {
   const handleLogout = () => {
     dispatch(logout());
     closeMenu();
-    router.replace("/auth/login");
+
+    requestAnimationFrame(() => {
+      router.replace("/auth/login");
+    });
   };
 
   return (

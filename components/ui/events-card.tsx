@@ -33,7 +33,9 @@ export const EventsCard = ({
 
         <Text style={styles.organizer}>{organizer}</Text>
 
-        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
+          {description}
+        </Text>
       </View>
 
       <View style={styles.buttonWrapper}>
